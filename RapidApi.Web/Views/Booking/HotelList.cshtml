@@ -1,0 +1,493 @@
+@{
+    ViewData["Title"] = "Milano Otelleri";
+    ViewData["Description"] = "Milano bölgesindeki konaklama seçeneklerini keşfedin.";
+    ViewData["ActivePage"] = "hotels";
+
+    // ---- Geçici örnek veri. Veritabanına bağlayınca Model.Hotels ile değiştirilecek. ----
+    var hotels = new List<HotelCardVm>
+    {
+        new() {
+            Id = 101, Name = "NYX Hotel Milan", Stars = 4,
+            Img = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80&auto=format&fit=crop",
+            MediaBadge = "Popüler Seçim",
+            Location = "Stazione Centrale, Milano", Distance = "Milano Centrale'ye 450 m",
+            Desc = "Şehir merkezine yakın, modern odaları ve güçlü ulaşım bağlantılarıyla Milano seyahatleri için ideal bir seçenek.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-snow", "Klima"), ("bi-cup-hot", "Bar"), ("bi-heart-pulse", "Fitness") },
+            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
+            Score = "8,7", Reviews = "2.184", Price = "€512", PriceNote = "+ €38 vergi ve ücret"
+        },
+        new() {
+            Id = 102, Name = "UNAHOTELS Galles Milano", Stars = 4,
+            Img = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80&auto=format&fit=crop",
+            Location = "Corso Buenos Aires, Milano", Distance = "Duomo'ya 2,1 km",
+            Desc = "Alışveriş caddesi Corso Buenos Aires'in başında, çatı terası ve şehir manzaralı odalarıyla keyifli bir konaklama.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-water", "Spa") },
+            BadgeKind = "deal", BadgeIcon = "bi-cup-hot", BadgeText = "Kahvaltı Dahil",
+            Score = "8,5", Reviews = "3.412", Price = "€449", PriceNote = "Vergiler ve ücretler dahil"
+        },
+        new() {
+            Id = 103, Name = "Rosa Grand Milano", Stars = 4,
+            Img = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80&auto=format&fit=crop",
+            MediaBadge = "En Çok Tercih Edilen",
+            Location = "Duomo, Milano", Distance = "Duomo'ya 200 m",
+            Desc = "Duomo Meydanı'na birkaç adım mesafede, iç avlulu sakin odaları ve zengin kahvaltısıyla merkezi bir otel.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-heart-pulse", "Fitness") },
+            BadgeKind = "view", BadgeIcon = "bi-eye", BadgeText = "Son 24 saatte 18 kez görüntülendi",
+            Score = "8,9", Reviews = "4.026", Price = "€684", PriceNote = "+ €52 vergi ve ücret"
+        },
+        new() {
+            Id = 104, Name = "Hotel Cavour", Stars = 4,
+            Img = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80&auto=format&fit=crop",
+            Location = "Brera, Milano", Distance = "Duomo'ya 900 m",
+            Desc = "Brera'nın sanat galerileri ve Montenapoleone mağazaları arasında, klasik dekorlu aile işletmesi bir otel.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-p-circle", "Otopark"), ("bi-snow", "Klima") },
+            Score = "8,3", Reviews = "1.538", Price = "€476", PriceNote = "Vergiler ve ücretler dahil"
+        },
+        new() {
+            Id = 105, Name = "NH Collection Milano President", Stars = 5,
+            Img = "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80&auto=format&fit=crop",
+            Location = "Milano Merkez, Milano", Distance = "Duomo'ya 500 m",
+            Desc = "Geniş odaları, spa merkezi ve özenli hizmetiyle iş ve tatil seyahatleri için şehrin kalbinde premium bir adres.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-water", "Spa"), ("bi-heart-pulse", "Fitness"), ("bi-p-circle", "Otopark") },
+            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
+            Score = "8,8", Reviews = "2.760", Price = "€790", PriceNote = "+ €61 vergi ve ücret"
+        },
+        new() {
+            Id = 106, Name = "Hotel Berna", Stars = 4,
+            Img = "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80&auto=format&fit=crop",
+            MediaBadge = "Popüler Seçim",
+            Location = "Stazione Centrale, Milano", Distance = "Milano Centrale'ye 300 m",
+            Desc = "Merkez tren istasyonuna yürüme mesafesinde, minibardaki ücretsiz içecekleri ve güler yüzlü ekibiyle bilinen bir otel.",
+            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-p-circle", "Otopark") },
+            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
+            Score = "8,6", Reviews = "5.193", Price = "€428", PriceNote = "Vergiler ve ücretler dahil"
+        }
+    };
+
+    // ---- Filtre seçenekleri: (değer, etiket, adet, seçili mi) ----
+    var starOptions = new[] { (5, 24, false), (4, 86, true), (3, 142, false), (2, 57, false) };
+    var scoreOptions = new[] { (9, "Olağanüstü", 38, false), (8, "Çok İyi", 164, true), (7, "İyi", 271, false), (6, "Keyifli", 352, false) };
+    var typeOptions = new[] {
+        ("hotel", "Otel", 248, true), ("apartment", "Daire", 96, false), ("aparthotel", "Apart Otel", 41, false),
+        ("resort", "Resort", 7, false), ("hostel", "Hostel", 44, false) };
+    var facilityOptions = new[] {
+        ("wifi", "Ücretsiz Wi-Fi", 412, true), ("breakfast", "Kahvaltı Dahil", 187, false), ("parking", "Otopark", 134, false),
+        ("ac", "Klima", 398, false), ("pool", "Havuz", 22, false), ("spa", "Spa", 31, false),
+        ("fitness", "Fitness Merkezi", 76, false), ("pets", "Evcil Hayvan Kabul Edilir", 118, false) };
+    var districtOptions = new[] {
+        ("centro", "Milano Merkez", 128, false), ("centrale", "Stazione Centrale", 94, false),
+        ("navigli", "Navigli", 47, false), ("duomo", "Duomo", 63, false), ("brera", "Brera", 38, false) };
+}
+
+@functions {
+    public class HotelCardVm
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public int Stars { get; set; }
+        public string Img { get; set; } = "";
+        public string? MediaBadge { get; set; }
+        public string Location { get; set; } = "";
+        public string Distance { get; set; } = "";
+        public string Desc { get; set; } = "";
+        public List<(string Icon, string Text)> Facilities { get; set; } = new();
+        public string? BadgeKind { get; set; }   // "deal" veya "view"
+        public string? BadgeIcon { get; set; }
+        public string? BadgeText { get; set; }
+        public string Score { get; set; } = "";
+        public string Reviews { get; set; } = "";
+        public string Price { get; set; } = "";
+        public string PriceNote { get; set; } = "";
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotel-list.css" asp-append-version="true" />
+}
+
+<main>
+
+    <!-- Search Summary -->
+    <section class="search-summary">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sf-breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Ana Sayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-action="HotelList">Oteller</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Milano</li>
+                </ol>
+            </nav>
+
+            <h1 class="page-title">Milano Otelleri</h1>
+            <p class="page-text">Milano bölgesindeki konaklama seçeneklerini keşfedin.</p>
+
+            <form class="summary-panel" asp-controller="Booking" asp-action="HotelList" method="get" role="search">
+                <div class="row g-2 g-lg-0 align-items-stretch">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="summary-field" for="sDestination">
+                            <i class="bi bi-geo-alt"></i>
+                            <span class="summary-body">
+                                <span class="summary-label">Lokasyon</span>
+                                <input type="text" id="sDestination" name="destination" class="summary-input" value="Milano, İtalya">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg">
+                        <label class="summary-field" for="sCheckin">
+                            <i class="bi bi-calendar3"></i>
+                            <span class="summary-body">
+                                <span class="summary-label">Giriş</span>
+                                <input type="text" id="sCheckin" name="checkin" class="summary-input" value="28 Ekim 2026">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg">
+                        <label class="summary-field" for="sCheckout">
+                            <i class="bi bi-calendar3"></i>
+                            <span class="summary-body">
+                                <span class="summary-label">Çıkış</span>
+                                <input type="text" id="sCheckout" name="checkout" class="summary-input" value="31 Ekim 2026">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg">
+                        <div class="summary-field">
+                            <i class="bi bi-people"></i>
+                            <span class="summary-body">
+                                <span class="summary-label">Misafir</span>
+                                <span class="summary-value">2 Yetişkin, 1 Çocuk</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-auto">
+                        <div class="summary-field">
+                            <i class="bi bi-door-closed"></i>
+                            <span class="summary-body">
+                                <span class="summary-label">Oda</span>
+                                <span class="summary-value">1 Oda</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-auto">
+                        <label class="summary-field" for="sCurrency">
+                            <span class="summary-body">
+                                <span class="summary-label">Para Birimi</span>
+                                <select id="sCurrency" name="currency" class="summary-input summary-select">
+                                    <option value="EUR" selected>EUR</option>
+                                    <option value="USD">USD</option>
+                                    <option value="TRY">TRY</option>
+                                    <option value="GBP">GBP</option>
+                                </select>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-lg-auto summary-btn-col">
+                        <button type="submit" class="btn btn-update w-100" aria-label="Aramayı Güncelle">
+                            <i class="bi bi-search"></i>
+                            <span class="btn-update-label">Aramayı Güncelle</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+
+            <!-- Results Toolbar -->
+            <div class="results-toolbar">
+                <div class="results-count">
+                    <h2>Milano için <strong>436 konaklama</strong> bulundu</h2>
+                    <span>28 – 31 Ekim 2026, 3 gece</span>
+                </div>
+
+                <div class="toolbar-actions">
+                    <!-- Mobil filtre butonu (lg altında görünür) -->
+                    <button class="btn btn-filter d-lg-none" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#filtersPanel" aria-controls="filtersPanel">
+                        <i class="bi bi-sliders"></i> Filtrele
+                    </button>
+
+                    <div class="sort-box">
+                        <label for="sortBy"><i class="bi bi-arrow-down-up"></i> Sırala</label>
+                        <select id="sortBy" name="sortBy" class="form-select sort-select">
+                            <option value="recommended" selected>Önerilen</option>
+                            <option value="price_asc">En Düşük Fiyat</option>
+                            <option value="score_desc">En Yüksek Puan</option>
+                            <option value="stars_desc">Yıldıza Göre</option>
+                            <option value="reviews_desc">En Çok Değerlendirilen</option>
+                        </select>
+                    </div>
+
+                    <div class="view-switch d-none d-md-inline-flex" role="group" aria-label="Görünüm">
+                        <button type="button" class="active" aria-pressed="true" aria-label="Liste görünümü"><i class="bi bi-list-ul"></i></button>
+                        <button type="button" aria-pressed="false" aria-label="Grid görünümü"><i class="bi bi-grid"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Filters (lg ve üzerinde sol kolon, altında offcanvas) -->
+                <aside class="col-lg-3">
+                    <div class="offcanvas-lg offcanvas-start filters-offcanvas" tabindex="-1" id="filtersPanel" aria-labelledby="filtersTitle">
+                        <div class="filters-card">
+                            <div class="filters-head">
+                                <h2 id="filtersTitle">Filtreler</h2>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="#" class="clear-link">Tümünü Temizle</a>
+                                    <button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas"
+                                            data-bs-target="#filtersPanel" aria-label="Kapat"></button>
+                                </div>
+                            </div>
+
+                            <div class="accordion filter-accordion" id="filterAccordion">
+
+                                <!-- A. Fiyat -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fPrice" aria-expanded="true" aria-controls="fPrice">
+                                            Gecelik Fiyat
+                                        </button>
+                                    </h3>
+                                    <div id="fPrice" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="price-range" aria-hidden="true">
+                                                <div class="price-track"><div class="price-fill"></div></div>
+                                                <span class="price-thumb" style="left: 12%"></span>
+                                                <span class="price-thumb" style="left: 78%"></span>
+                                            </div>
+                                            <div class="price-scale"><span>€50</span><span>€500+</span></div>
+                                            <div class="row g-2 mt-1">
+                                                <div class="col-6">
+                                                    <label class="mini-label" for="minPrice">Minimum</label>
+                                                    <div class="price-input">
+                                                        <span>€</span>
+                                                        <input type="number" id="minPrice" name="minPrice" value="100" min="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="mini-label" for="maxPrice">Maksimum</label>
+                                                    <div class="price-input">
+                                                        <span>€</span>
+                                                        <input type="number" id="maxPrice" name="maxPrice" value="400" min="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- B. Yıldız -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fStars" aria-expanded="true" aria-controls="fStars">
+                                            Yıldız Sayısı
+                                        </button>
+                                    </h3>
+                                    <div id="fStars" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            @foreach (var o in starOptions)
+                                            {
+                                                <label class="filter-option">
+                                                    <input class="form-check-input" type="checkbox" name="stars" value="@o.Item1" checked="@o.Item3">
+                                                    <span class="option-text"><span class="stars-inline">@(new string('★', o.Item1))</span> @o.Item1 Yıldız</span>
+                                                    <span class="option-count">@o.Item2</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- C. Misafir Puanı -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fScore" aria-expanded="true" aria-controls="fScore">
+                                            Misafir Puanı
+                                        </button>
+                                    </h3>
+                                    <div id="fScore" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            @foreach (var o in scoreOptions)
+                                            {
+                                                <label class="filter-option">
+                                                    <input class="form-check-input" type="radio" name="minScore" value="@o.Item1" checked="@o.Item4">
+                                                    <span class="option-text"><span class="score-chip">@(o.Item1)+</span> @o.Item2</span>
+                                                    <span class="option-count">@o.Item3</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- D. Konaklama Türü -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fType" aria-expanded="true" aria-controls="fType">
+                                            Konaklama Türü
+                                        </button>
+                                    </h3>
+                                    <div id="fType" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            @foreach (var o in typeOptions)
+                                            {
+                                                <label class="filter-option">
+                                                    <input class="form-check-input" type="checkbox" name="type" value="@o.Item1" checked="@o.Item4">
+                                                    <span class="option-text">@o.Item2</span>
+                                                    <span class="option-count">@o.Item3</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- E. Popüler Özellikler -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fFacilities" aria-expanded="false" aria-controls="fFacilities">
+                                            Popüler Özellikler
+                                        </button>
+                                    </h3>
+                                    <div id="fFacilities" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            @foreach (var o in facilityOptions)
+                                            {
+                                                <label class="filter-option">
+                                                    <input class="form-check-input" type="checkbox" name="facilities" value="@o.Item1" checked="@o.Item4">
+                                                    <span class="option-text">@o.Item2</span>
+                                                    <span class="option-count">@o.Item3</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- F. Bölge -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fDistrict" aria-expanded="false" aria-controls="fDistrict">
+                                            Bölge
+                                        </button>
+                                    </h3>
+                                    <div id="fDistrict" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            @foreach (var o in districtOptions)
+                                            {
+                                                <label class="filter-option">
+                                                    <input class="form-check-input" type="checkbox" name="district" value="@o.Item1" checked="@o.Item4">
+                                                    <span class="option-text">@o.Item2</span>
+                                                    <span class="option-count">@o.Item3</span>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobilde sonuçları göster butonu -->
+                            <div class="filters-footer d-lg-none">
+                                <button type="button" class="btn btn-primary-sf w-100" data-bs-dismiss="offcanvas" data-bs-target="#filtersPanel">
+                                    436 sonucu göster
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Hotel Results -->
+                <div class="col-lg-9">
+                    <div class="hotel-list">
+
+                        @foreach (var hotel in hotels)
+                        {
+                            <article class="hotel-card"
+                                     data-hotel-id="@hotel.Id"
+                                     data-city="Milano" data-country="İtalya"
+                                     data-accommodation-type="Otel"
+                                     data-checkin="2026-10-28" data-checkout="2026-10-31">
+                                <div class="hotel-media">
+                                    <img src="@hotel.Img" alt="@hotel.Name" loading="lazy">
+                                    <button type="button" class="fav-btn" aria-label="Favorilere ekle"><i class="bi bi-heart"></i></button>
+                                    @if (!string.IsNullOrEmpty(hotel.MediaBadge))
+                                    {
+                                        <span class="media-badge">@hotel.MediaBadge</span>
+                                    }
+                                </div>
+
+                                <div class="hotel-info">
+                                    <h3 class="hotel-name">
+                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id">@hotel.Name</a>
+                                    </h3>
+                                    <div class="hotel-stars">
+                                        <span class="stars" aria-label="@hotel.Stars yıldız">@(new string('★', hotel.Stars))</span>
+                                        <span class="stars-text">@hotel.Stars Yıldızlı Otel</span>
+                                    </div>
+                                    <p class="hotel-location">
+                                        <i class="bi bi-geo-alt"></i>
+                                        <span>@hotel.Location</span>
+                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id" asp-fragment="location" class="map-link">Haritada göster</a>
+                                    </p>
+                                    <p class="hotel-distance"><i class="bi bi-signpost-2"></i> @hotel.Distance</p>
+                                    <p class="hotel-desc">@hotel.Desc</p>
+                                    <ul class="facility-list">
+                                        @foreach (var f in hotel.Facilities)
+                                        {
+                                            <li><i class="bi @f.Icon"></i> @f.Text</li>
+                                        }
+                                    </ul>
+                                    @if (hotel.BadgeKind == "deal")
+                                    {
+                                        <span class="deal-badge"><i class="bi @hotel.BadgeIcon"></i> @hotel.BadgeText</span>
+                                    }
+                                    else if (hotel.BadgeKind == "view")
+                                    {
+                                        <span class="view-badge"><i class="bi @hotel.BadgeIcon"></i> @hotel.BadgeText</span>
+                                    }
+                                </div>
+
+                                <div class="hotel-side">
+                                    <div class="rating">
+                                        <div class="rating-text">
+                                            <strong>Çok İyi</strong>
+                                            <span>@hotel.Reviews değerlendirme</span>
+                                        </div>
+                                        <span class="rating-score">@hotel.Score</span>
+                                    </div>
+                                    <div class="price-box">
+                                        <span class="price-meta">3 gece, 2 yetişkin, 1 çocuk</span>
+                                        <span class="price">@hotel.Price</span>
+                                        <span class="price-note">@hotel.PriceNote</span>
+                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id" class="btn btn-detail">Detayları Gör</a>
+                                    </div>
+                                </div>
+                            </article>
+                        }
+
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="pagination-wrap" aria-label="Sonuç sayfaları">
+                        <span class="pagination-info">1-20 / 436 sonuç</span>
+                        <ul class="pagination sf-pagination mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Önceki sayfa"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item d-none d-sm-block"><a class="page-link" href="#">5</a></li>
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                            <li class="page-item"><a class="page-link" href="#">18</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Sonraki sayfa"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>

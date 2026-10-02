@@ -1,0 +1,384 @@
+@{
+    ViewData["Title"] = "Sıradaki konaklamanı keşfet";
+    ViewData["Description"] = "Dünyanın dört bir yanındaki otelleri karşılaştır, sana en uygun konaklamayı kolayca bul.";
+    ViewData["ActivePage"] = "home";
+    ViewData["BodyClass"] = "page-home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<main>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Sıradaki konaklamanı keşfet.</h1>
+                    <p class="hero-text">
+                        Dünyanın dört bir yanındaki otelleri karşılaştır, sana en uygun konaklamayı kolayca bul.
+                    </p>
+                    <ul class="hero-trust list-unstyled">
+                        <li><i class="bi bi-shield-check"></i> Güvenli rezervasyon</li>
+                        <li><i class="bi bi-tag"></i> Şeffaf fiyatlar</li>
+                        <li><i class="bi bi-headset"></i> 7/24 destek</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-6 d-none d-lg-block">
+                    <!-- Hero illüstrasyonu (inline SVG, harici görsel gerektirmez) -->
+                    <div class="hero-illustration" aria-hidden="true">
+                        <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="300" cy="190" r="160" fill="#E9EBFB"/>
+                            <circle cx="415" cy="80" r="26" fill="#FFD9A8"/>
+                            <g fill="#FFFFFF">
+                                <rect x="120" y="70" width="90" height="26" rx="13"/>
+                                <rect x="140" y="56" width="46" height="30" rx="15"/>
+                                <rect x="380" y="140" width="80" height="22" rx="11"/>
+                            </g>
+                            <path d="M60 170 C 130 110, 200 120, 250 80" fill="none" stroke="#B9BDEB" stroke-width="2.5" stroke-dasharray="6 8" stroke-linecap="round"/>
+                            <g transform="translate(250 72) rotate(-28)">
+                                <path d="M0 8 L34 4 L44 0 L48 4 L44 8 L34 8 L0 12 Z" fill="#3B3FB6"/>
+                                <path d="M18 7 L10 -8 L16 -8 L28 6 Z" fill="#5A5ED0"/>
+                                <path d="M18 9 L10 22 L16 22 L28 10 Z" fill="#5A5ED0"/>
+                            </g>
+                            <rect x="230" y="120" width="140" height="210" rx="10" fill="#FFFFFF"/>
+                            <rect x="230" y="120" width="140" height="26" rx="10" fill="#3B3FB6"/>
+                            <rect x="230" y="136" width="140" height="10" fill="#3B3FB6"/>
+                            <text x="300" y="138" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="12" font-weight="800" fill="#FFFFFF" letter-spacing="3">HOTEL</text>
+                            <g fill="#DADDF6">
+                                <rect x="248" y="162" width="22" height="26" rx="4"/>
+                                <rect x="289" y="162" width="22" height="26" rx="4"/>
+                                <rect x="330" y="162" width="22" height="26" rx="4"/>
+                                <rect x="248" y="202" width="22" height="26" rx="4"/>
+                                <rect x="289" y="202" width="22" height="26" rx="4" fill="#FFD9A8"/>
+                                <rect x="330" y="202" width="22" height="26" rx="4"/>
+                                <rect x="248" y="242" width="22" height="26" rx="4" fill="#FFD9A8"/>
+                                <rect x="289" y="242" width="22" height="26" rx="4"/>
+                                <rect x="330" y="242" width="22" height="26" rx="4"/>
+                            </g>
+                            <rect x="282" y="284" width="36" height="46" rx="6" fill="#3B3FB6"/>
+                            <rect x="380" y="200" width="70" height="130" rx="8" fill="#F5F6FA"/>
+                            <g fill="#DADDF6">
+                                <rect x="394" y="216" width="16" height="18" rx="3"/>
+                                <rect x="420" y="216" width="16" height="18" rx="3"/>
+                                <rect x="394" y="246" width="16" height="18" rx="3"/>
+                                <rect x="420" y="246" width="16" height="18" rx="3"/>
+                            </g>
+                            <rect x="184" y="230" width="8" height="100" rx="4" fill="#C9A77C"/>
+                            <g fill="#6FB39A">
+                                <ellipse cx="170" cy="228" rx="28" ry="9" transform="rotate(-20 170 228)"/>
+                                <ellipse cx="208" cy="228" rx="28" ry="9" transform="rotate(20 208 228)"/>
+                                <ellipse cx="188" cy="220" rx="9" ry="24"/>
+                            </g>
+                            <g transform="translate(96 250)">
+                                <rect x="16" y="-14" width="26" height="18" rx="6" fill="none" stroke="#1B2140" stroke-width="5"/>
+                                <rect x="0" y="0" width="58" height="76" rx="10" fill="#1B2140"/>
+                                <rect x="12" y="10" width="6" height="56" rx="3" fill="#3B3FB6"/>
+                                <rect x="40" y="10" width="6" height="56" rx="3" fill="#3B3FB6"/>
+                                <circle cx="12" cy="80" r="4" fill="#1B2140"/>
+                                <circle cx="46" cy="80" r="4" fill="#1B2140"/>
+                            </g>
+                            <rect x="60" y="330" width="420" height="4" rx="2" fill="#DADDF6"/>
+                        </svg>
+
+                        <div class="floating-card">
+                            <span class="floating-score">9,2</span>
+                            <div>
+                                <strong>Mükemmel</strong>
+                                <small>1.284 misafir yorumu</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Area -->
+            <form class="search-panel" asp-controller="Booking" asp-action="HotelList" method="get" role="search">
+                <div class="search-main">
+                    <div class="row g-0 align-items-stretch">
+
+                        <!-- Lokasyon -->
+                        <div class="col-12 col-lg-4">
+                            <label class="search-field" for="destination">
+                                <i class="bi bi-geo-alt field-icon"></i>
+                                <span class="field-body">
+                                    <span class="field-label">Nereye gidiyorsunuz?</span>
+                                    <input type="text" id="destination" name="destination" class="field-input"
+                                           value="Milano, İtalya" placeholder="Şehir, bölge veya otel adı">
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Giriş -->
+                        <div class="col-6 col-lg-2">
+                            <label class="search-field" for="checkin">
+                                <i class="bi bi-calendar3 field-icon"></i>
+                                <span class="field-body">
+                                    <span class="field-label">Giriş</span>
+                                    <input type="text" id="checkin" name="checkin" class="field-input" value="28 Ekim 2026">
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Çıkış -->
+                        <div class="col-6 col-lg-2">
+                            <label class="search-field" for="checkout">
+                                <i class="bi bi-calendar3 field-icon"></i>
+                                <span class="field-body">
+                                    <span class="field-label">Çıkış</span>
+                                    <input type="text" id="checkout" name="checkout" class="field-input" value="31 Ekim 2026">
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Para Birimi -->
+                        <div class="col-12 col-lg-2">
+                            <label class="search-field" for="currency">
+                                <i class="bi bi-cash-coin field-icon"></i>
+                                <span class="field-body">
+                                    <span class="field-label">Para Birimi</span>
+                                    <select id="currency" name="currency" class="field-input field-select">
+                                        <option value="EUR" selected>EUR</option>
+                                        <option value="USD">USD</option>
+                                        <option value="TRY">TRY</option>
+                                        <option value="GBP">GBP</option>
+                                    </select>
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Arama butonu -->
+                        <div class="col-12 col-lg-2 search-btn-col">
+                            <button type="submit" class="btn btn-search w-100">
+                                <i class="bi bi-search"></i>
+                                <span>Otelleri Ara</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Misafir ve oda bilgileri -->
+                <div class="search-guests">
+                    <div class="row g-3 align-items-center">
+
+                        <!-- Yetişkin -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="counter-field">
+                                <span class="counter-label"><i class="bi bi-person"></i> Yetişkin</span>
+                                <div class="counter" data-min="1" data-max="10">
+                                    <button type="button" class="counter-btn" data-action="minus" aria-label="Yetişkin azalt"><i class="bi bi-dash"></i></button>
+                                    <input type="text" name="adults" class="counter-value" value="2" readonly aria-label="Yetişkin sayısı">
+                                    <button type="button" class="counter-btn" data-action="plus" aria-label="Yetişkin artır"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Çocuk -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="counter-field">
+                                <span class="counter-label"><i class="bi bi-emoji-smile"></i> Çocuk</span>
+                                <div class="counter" id="childCounter" data-min="0" data-max="6">
+                                    <button type="button" class="counter-btn" data-action="minus" aria-label="Çocuk azalt"><i class="bi bi-dash"></i></button>
+                                    <input type="text" name="children" class="counter-value" value="1" readonly aria-label="Çocuk sayısı">
+                                    <button type="button" class="counter-btn" data-action="plus" aria-label="Çocuk artır"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oda -->
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="counter-field">
+                                <span class="counter-label"><i class="bi bi-door-closed"></i> Oda</span>
+                                <div class="counter" data-min="1" data-max="5">
+                                    <button type="button" class="counter-btn" data-action="minus" aria-label="Oda azalt"><i class="bi bi-dash"></i></button>
+                                    <input type="text" name="rooms" class="counter-value" value="1" readonly aria-label="Oda sayısı">
+                                    <button type="button" class="counter-btn" data-action="plus" aria-label="Oda artır"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Çocuk Yaşı (çocuk sayısı 0'dan büyükse görünür) -->
+                        <div class="col-12 col-sm-6 col-lg-3" id="childAgeWrapper">
+                            <div class="counter-field">
+                                <label class="counter-label" for="childAge"><i class="bi bi-balloon"></i> Çocuk Yaşı</label>
+                                <select id="childAge" name="childAges" class="form-select age-select">
+                                    @for (var age = 0; age <= 17; age++)
+                                    {
+                                        <option value="@age" selected="@(age == 2)">@age yaş</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section class="section" id="destinations">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">Popüler Destinasyonları Keşfet</h2>
+                    <p class="section-text">Seyahat severlerin en çok tercih ettiği şehirlerden ilham al.</p>
+                </div>
+                <a asp-action="HotelList" class="section-link">Tüm şehirler <i class="bi bi-chevron-right"></i></a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a asp-action="HotelList" asp-route-destination="Milano" class="destination-card">
+                        <div class="destination-img">
+                            <img src="https://images.unsplash.com/photo-1513581166391-887a96ddeafd?w=800&q=80&auto=format&fit=crop"
+                                 alt="Milano Duomo Katedrali" loading="lazy">
+                        </div>
+                        <div class="destination-body">
+                            <div>
+                                <h3>Milano</h3>
+                                <span class="destination-country"><i class="bi bi-geo-alt"></i> İtalya</span>
+                            </div>
+                            <span class="destination-count">1.240+ konaklama</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a asp-action="HotelList" asp-route-destination="Roma" class="destination-card">
+                        <div class="destination-img">
+                            <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80&auto=format&fit=crop"
+                                 alt="Roma Kolezyum" loading="lazy">
+                        </div>
+                        <div class="destination-body">
+                            <div>
+                                <h3>Roma</h3>
+                                <span class="destination-country"><i class="bi bi-geo-alt"></i> İtalya</span>
+                            </div>
+                            <span class="destination-count">2.180+ konaklama</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a asp-action="HotelList" asp-route-destination="Paris" class="destination-card">
+                        <div class="destination-img">
+                            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80&auto=format&fit=crop"
+                                 alt="Paris Eyfel Kulesi" loading="lazy">
+                        </div>
+                        <div class="destination-body">
+                            <div>
+                                <h3>Paris</h3>
+                                <span class="destination-country"><i class="bi bi-geo-alt"></i> Fransa</span>
+                            </div>
+                            <span class="destination-count">3.420+ konaklama</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a asp-action="HotelList" asp-route-destination="Barcelona" class="destination-card">
+                        <div class="destination-img">
+                            <img src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&q=80&auto=format&fit=crop"
+                                 alt="Barcelona Sagrada Familia" loading="lazy">
+                        </div>
+                        <div class="destination-body">
+                            <div>
+                                <h3>Barcelona</h3>
+                                <span class="destination-country"><i class="bi bi-geo-alt"></i> İspanya</span>
+                            </div>
+                            <span class="destination-count">1.890+ konaklama</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodation Types -->
+    <section class="section section-muted">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">Nasıl bir konaklama arıyorsunuz?</h2>
+                    <p class="section-text">Seyahat tarzına uygun konaklama türünü seç, aramanı daralt.</p>
+                </div>
+            </div>
+
+            <div class="row g-3 g-lg-4">
+                <div class="col-6 col-lg-3">
+                    <a asp-action="HotelList" class="type-card">
+                        <span class="type-icon"><i class="bi bi-building"></i></span>
+                        <span class="type-name">Oteller</span>
+                        <span class="type-meta">8.420 seçenek</span>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <a asp-action="HotelList" class="type-card">
+                        <span class="type-icon"><i class="bi bi-house"></i></span>
+                        <span class="type-name">Daireler</span>
+                        <span class="type-meta">3.150 seçenek</span>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <a asp-action="HotelList" class="type-card">
+                        <span class="type-icon"><i class="bi bi-sun"></i></span>
+                        <span class="type-name">Resort</span>
+                        <span class="type-meta">960 seçenek</span>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <a asp-action="HotelList" class="type-card">
+                        <span class="type-icon"><i class="bi bi-house-door"></i></span>
+                        <span class="type-name">Tatil Evleri</span>
+                        <span class="type-meta">2.370 seçenek</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+        <div class="container">
+            <div class="section-head section-head-center">
+                <div>
+                    <h2 class="section-title">Neden StayFinder?</h2>
+                    <p class="section-text">Doğru oteli bulmak için ihtiyacın olan her şey tek bir yerde.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-globe2"></i></span>
+                        <h3>Binlerce Otel</h3>
+                        <p>Dünyanın farklı şehirlerindeki konaklama seçeneklerini keşfedin.</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-star"></i></span>
+                        <h3>Gerçek Puanlar</h3>
+                        <p>Misafir değerlendirmelerine göre otelleri kolayca karşılaştırın.</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="bi bi-currency-exchange"></i></span>
+                        <h3>Farklı Para Birimleri</h3>
+                        <p>Fiyatları tercih ettiğiniz para biriminde görüntüleyin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+@section Scripts {
+    <script src="~/js/home.js" asp-append-version="true"></script>
+}

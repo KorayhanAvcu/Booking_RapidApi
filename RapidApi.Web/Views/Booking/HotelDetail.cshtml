@@ -1,0 +1,443 @@
+@{
+    ViewData["Title"] = "NYX Hotel Milan";
+    ViewData["Description"] = "NYX Hotel Milan: Milano Centrale yakınında 4 yıldızlı modern şehir oteli. Odaları, özellikleri ve fiyatları inceleyin.";
+    ViewData["ActivePage"] = "hotels";
+
+    // ---- Geçici örnek veri. ViewModel'e bağlayınca Model.* ile değiştirilecek. ----
+    var facilities = new[] {
+        ("bi-wifi", "Wi-Fi", "Ücretsiz"),
+        ("bi-cup-hot", "Kahvaltı", "Mevcut"),
+        ("bi-snow", "Klima", "Tüm odalarda"),
+        ("bi-clock", "24 Saat Resepsiyon", "Her gün"),
+        ("bi-heart-pulse", "Fitness Merkezi", "06:00 - 23:00"),
+        ("bi-egg-fried", "Restoran", "İtalyan mutfağı"),
+        ("bi-cup-straw", "Bar", "Çatı katında"),
+        ("bi-p-circle", "Otopark", "Ücretli"),
+        ("bi-suitcase2", "Bagaj Muhafazası", "Ücretsiz"),
+        ("bi-bell", "Oda Servisi", "07:00 - 23:00")
+    };
+
+    var nearby = new[] {
+        ("bi-train-front", "Milano Centrale", "450 m"),
+        ("bi-bag", "Corso Buenos Aires", "1,2 km"),
+        ("bi-bank", "Duomo di Milano", "2,8 km"),
+        ("bi-palette", "Brera", "2,4 km"),
+        ("bi-airplane", "Malpensa Havalimanı", "48 km")
+    };
+
+    var ratings = new[] {
+        ("Temizlik", "9,1", 91), ("Konum", "9,2", 92), ("Konfor", "8,8", 88),
+        ("Personel", "8,9", 89), ("Fiyat / Performans", "8,3", 83), ("Wi-Fi", "8,6", 86)
+    };
+
+    var photos = new[] {
+        ("Deluxe Oda", "Deluxe Double Room", "photo-1631049307264-da0ec9d70304"),
+        ("Standard Oda", "Standard Double Room", "photo-1590490360182-c33d57733427"),
+        ("Banyo", "Yağmur duşlu modern banyo", "photo-1552321554-5fefe8c9ef14"),
+        ("Otel Lobisi", "Resepsiyon ve oturma alanı", "photo-1564501049412-61c2a3083791"),
+        ("Restoran", "İtalyan mutfağı restoranı", "photo-1414235077428-338989a2e8c0"),
+        ("Kahvaltı Alanı", "Açık büfe kahvaltı", "photo-1533089860892-a7c6f0a88666"),
+        ("Fitness Merkezi", "Tam donanımlı spor salonu", "photo-1534438327276-14e5300c3a48"),
+        ("Dış Cephe", "Otel girişi", "photo-1542314831-068cd1dbfeeb"),
+        ("Şehir Manzarası", "Çatı katından Milano", "photo-1513581166391-887a96ddeafd")
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotel-detail.css" asp-append-version="true" />
+}
+
+@* HotelId, Latitude ve Longitude değerleri data-* özelliklerinde tutulur *@
+<main class="hotel-page"
+      data-hotel-id="101"
+      data-city="Milano" data-country="İtalya"
+      data-latitude="45.4842" data-longitude="9.2040"
+      data-checkin="2026-10-28" data-checkout="2026-10-31"
+      data-currency="EUR">
+
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb sf-breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Ana Sayfa</a></li>
+                <li class="breadcrumb-item"><a asp-action="HotelList">Oteller</a></li>
+                <li class="breadcrumb-item"><a asp-action="HotelList">Milano</a></li>
+                <li class="breadcrumb-item active" aria-current="page">NYX Hotel Milan</li>
+            </ol>
+        </nav>
+
+        <!-- Hotel Heading -->
+        <section class="hotel-heading">
+            <div class="heading-main">
+                @* Model.HotelName *@
+                <h1 class="hotel-title">NYX Hotel Milan</h1>
+                <div class="hotel-stars">
+                    @* Model.StarRating *@
+                    <span class="stars" aria-label="4 yıldız">★★★★</span>
+                    <span class="stars-text">4 Yıldızlı Otel</span>
+                </div>
+                <p class="hotel-address">
+                    <i class="bi bi-geo-alt"></i>
+                    @* Model.Address, Model.City, Model.Country *@
+                    <span>Milano Centrale, Milano, İtalya</span>
+                    <a href="#location" class="map-link">Haritada Göster</a>
+                </p>
+            </div>
+
+            <div class="heading-side">
+                <div class="heading-rating">
+                    <div class="rating-text">
+                        <strong>Çok İyi</strong>
+                        @* Model.ReviewCount *@
+                        <span>2.184 değerlendirme</span>
+                    </div>
+                    @* Model.ReviewScore *@
+                    <span class="rating-score rating-score-lg">8,7</span>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="icon-btn fav-btn" aria-label="Favorilere ekle"><i class="bi bi-heart"></i></button>
+                    <button type="button" class="icon-btn" aria-label="Paylaş"><i class="bi bi-share"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hotel Gallery -->
+        @* Model.PhotoUrls[0] büyük görsel, [1]-[4] küçük görseller *@
+        <section class="hotel-gallery" aria-label="Otel fotoğrafları">
+            <a href="#hotelPhotos" class="gallery-item gallery-main">
+                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1400&q=80&auto=format&fit=crop"
+                     alt="NYX Hotel Milan dış cephe">
+            </a>
+            <a href="#hotelPhotos" class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700&q=80&auto=format&fit=crop"
+                     alt="Oda" loading="lazy">
+                <span class="gallery-tag">Oda</span>
+            </a>
+            <a href="#hotelPhotos" class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80&auto=format&fit=crop"
+                     alt="Lobi" loading="lazy">
+                <span class="gallery-tag">Lobi</span>
+            </a>
+            <a href="#hotelPhotos" class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80&auto=format&fit=crop"
+                     alt="Restoran" loading="lazy">
+                <span class="gallery-tag">Restoran</span>
+            </a>
+            <a href="#hotelPhotos" class="gallery-item gallery-more">
+                <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=700&q=80&auto=format&fit=crop"
+                     alt="Banyo" loading="lazy">
+                <span class="gallery-overlay"><i class="bi bi-images"></i> +12 Fotoğraf</span>
+            </a>
+        </section>
+
+        <div class="row g-4 g-xl-5 detail-layout">
+
+            <!-- Sol kolon: detay içerikleri -->
+            <div class="col-lg-8">
+
+                <!-- Hotel About -->
+                <section class="detail-block" id="about">
+                    <h2 class="block-title">Otel Hakkında</h2>
+                    @* Model.Description *@
+                    <div class="about-text">
+                        <p>NYX Hotel Milan, Milano Centrale istasyonuna kısa yürüme mesafesinde bulunan modern ve şık bir şehir otelidir. Merkezi konumu sayesinde Duomo, Brera ve Corso Buenos Aires gibi Milano'nun popüler noktalarına kolay ulaşım sağlar.</p>
+                        <p>Modern odaları, restoranı ve konforlu ortak alanlarıyla hem iş hem de turistik seyahatler için ideal bir konaklama seçeneğidir. Otelin çatı katındaki bar, akşamları şehir manzarası eşliğinde dinlenmek için sakin bir alan sunar.</p>
+                    </div>
+                    <ul class="tag-list">
+                        <li><i class="bi bi-buildings"></i> Şehir Merkezi</li>
+                        <li><i class="bi bi-pin-map"></i> Merkezi Konum</li>
+                        <li><i class="bi bi-briefcase"></i> İş Seyahati İçin Uygun</li>
+                        <li><i class="bi bi-people"></i> Çiftler İçin Popüler</li>
+                    </ul>
+                </section>
+
+                <!-- Facilities -->
+                <section class="detail-block" id="facilities">
+                    <h2 class="block-title">Popüler Özellikler</h2>
+                    <div class="row g-3 facility-grid">
+                        @foreach (var f in facilities)
+                        {
+                            <div class="col-6 col-md-4">
+                                <div class="facility-item">
+                                    <span class="facility-icon"><i class="bi @f.Item1"></i></span>
+                                    <span class="facility-text"><strong>@f.Item2</strong><small>@f.Item3</small></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+                <!-- Location -->
+                <section class="detail-block" id="location">
+                    <h2 class="block-title">Otel Konumu</h2>
+                    <div class="location-card">
+                        @* Statik harita görseli. İleride Latitude/Longitude ile gerçek harita eklenebilir. *@
+                        <div class="map-placeholder" aria-label="Otel konumu haritası" role="img">
+                            <svg viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect width="800" height="300" fill="#EEF0F6"/>
+                                <rect x="40" y="30" width="150" height="90" rx="14" fill="#DCEFE4"/>
+                                <rect x="590" y="190" width="170" height="80" rx="14" fill="#DCEFE4"/>
+                                <path d="M0 250 C 200 230, 330 280, 520 240 S 760 220, 800 235" stroke="#CFE0F5" stroke-width="16" fill="none"/>
+                                <g stroke="#FFFFFF" stroke-linecap="round" fill="none">
+                                    <path d="M0 150 L800 130" stroke-width="18"/>
+                                    <path d="M260 0 L320 300" stroke-width="16"/>
+                                    <path d="M560 0 L500 300" stroke-width="14"/>
+                                    <path d="M0 60 L260 80 L560 40 L800 70" stroke-width="10"/>
+                                    <path d="M320 210 L800 200" stroke-width="10"/>
+                                    <path d="M110 300 L180 150" stroke-width="8"/>
+                                    <path d="M660 0 L700 130" stroke-width="8"/>
+                                </g>
+                                <g fill="#E3E6EF">
+                                    <rect x="340" y="60" width="70" height="55" rx="8"/>
+                                    <rect x="420" y="55" width="110" height="60" rx="8"/>
+                                    <rect x="340" y="160" width="140" height="35" rx="8"/>
+                                    <rect x="590" y="80" width="60" height="40" rx="8"/>
+                                    <rect x="40" y="170" width="110" height="50" rx="8"/>
+                                </g>
+                                <path d="M420 0 L440 300" stroke="#C3C7DA" stroke-width="4" stroke-dasharray="10 8"/>
+                                <circle cx="436" cy="118" r="7" fill="#7A7F9A"/>
+                                <circle cx="210" cy="95" r="7" fill="#7A7F9A"/>
+                                <circle cx="610" cy="215" r="7" fill="#7A7F9A"/>
+                            </svg>
+                            <div class="map-pin">
+                                <span class="map-pin-label">NYX Hotel Milan</span>
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                        </div>
+
+                        <div class="location-body">
+                            <p class="location-address">
+                                <i class="bi bi-geo-alt"></i>
+                                @* Model.Address *@
+                                <span>Via Tortona 35, Milano, İtalya</span>
+                            </p>
+
+                            <ul class="nearby-list">
+                                @foreach (var n in nearby)
+                                {
+                                    <li><span><i class="bi @n.Item1"></i> @n.Item2</span><strong>@n.Item3</strong></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rooms -->
+                <section class="detail-block" id="rooms">
+                    <div class="block-head">
+                        <h2 class="block-title">Uygun Odalar</h2>
+                        <p class="block-text">28 Ekim 2026 - 31 Ekim 2026 · 3 Gece · 2 Yetişkin · 1 Çocuk</p>
+                    </div>
+
+                    <div class="room-list">
+
+                        @* @foreach (var room in Model.Rooms) { <partial name="_RoomCard" model="room" /> } *@
+
+                        <!-- Room Card Start -->
+                        <article class="room-card" data-room-id="R-201">
+                            <div class="room-media">
+                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=700&q=80&auto=format&fit=crop"
+                                     alt="Standard Double Room" loading="lazy">
+                            </div>
+                            <div class="room-info">
+                                <h3 class="room-name">Standard Double Room</h3>
+                                <ul class="room-specs">
+                                    <li><i class="bi bi-moon-stars"></i> 1 çift kişilik yatak</li>
+                                    <li><i class="bi bi-person"></i> 2 yetişkin</li>
+                                    <li><i class="bi bi-arrows-angle-expand"></i> 22 m²</li>
+                                </ul>
+                                <ul class="room-perks">
+                                    <li><i class="bi bi-wifi"></i> Ücretsiz Wi-Fi</li>
+                                    <li><i class="bi bi-snow"></i> Klima</li>
+                                </ul>
+                                <span class="policy-text"><i class="bi bi-info-circle"></i> İade edilmez</span>
+                            </div>
+                            <div class="room-price">
+                                <span class="price-meta">3 gece için</span>
+                                <span class="price">€428</span>
+                                <span class="price-note">+ €48 vergi ve ücret</span>
+                                <button type="button" class="btn btn-primary-sf w-100">Odayı Seç</button>
+                            </div>
+                        </article>
+                        <!-- Room Card End -->
+
+                        <!-- Room Card Start -->
+                        <article class="room-card room-card-featured" data-room-id="R-305">
+                            <div class="room-media">
+                                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700&q=80&auto=format&fit=crop"
+                                     alt="Superior Room" loading="lazy">
+                                <span class="media-badge">En Çok Tercih Edilen</span>
+                            </div>
+                            <div class="room-info">
+                                <h3 class="room-name">Superior Room</h3>
+                                <ul class="room-specs">
+                                    <li><i class="bi bi-moon-stars"></i> 1 büyük çift kişilik yatak</li>
+                                    <li><i class="bi bi-people"></i> 2 yetişkin + 1 çocuk</li>
+                                    <li><i class="bi bi-arrows-angle-expand"></i> 28 m²</li>
+                                </ul>
+                                <ul class="room-perks">
+                                    <li><i class="bi bi-buildings"></i> Şehir manzarası</li>
+                                    <li class="perk-positive"><i class="bi bi-cup-hot"></i> Kahvaltı dahil</li>
+                                </ul>
+                                <span class="policy-text"><i class="bi bi-info-circle"></i> Girişten 3 gün öncesine kadar iptal</span>
+                            </div>
+                            <div class="room-price">
+                                <span class="price-meta">3 gece için</span>
+                                <span class="price">€512</span>
+                                <span class="price-note">+ €48 vergi ve ücret</span>
+                                <button type="button" class="btn btn-primary-sf w-100">Odayı Seç</button>
+                            </div>
+                        </article>
+                        <!-- Room Card End -->
+
+                        <!-- Room Card Start -->
+                        <article class="room-card" data-room-id="R-512">
+                            <div class="room-media">
+                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=80&auto=format&fit=crop"
+                                     alt="Junior Suite" loading="lazy">
+                            </div>
+                            <div class="room-info">
+                                <h3 class="room-name">Junior Suite</h3>
+                                <ul class="room-specs">
+                                    <li><i class="bi bi-moon-stars"></i> King Size yatak</li>
+                                    <li><i class="bi bi-people"></i> 3 kişiye kadar</li>
+                                    <li><i class="bi bi-arrows-angle-expand"></i> 38 m²</li>
+                                </ul>
+                                <ul class="room-perks">
+                                    <li><i class="bi bi-lamp"></i> Oturma alanı</li>
+                                    <li class="perk-positive"><i class="bi bi-cup-hot"></i> Kahvaltı dahil</li>
+                                </ul>
+                                <span class="policy-text policy-free"><i class="bi bi-check2-circle"></i> Ücretsiz iptal</span>
+                            </div>
+                            <div class="room-price">
+                                <span class="price-meta">3 gece için</span>
+                                <span class="price">€684</span>
+                                <span class="price-note">+ €52 vergi ve ücret</span>
+                                <button type="button" class="btn btn-primary-sf w-100">Odayı Seç</button>
+                            </div>
+                        </article>
+                        <!-- Room Card End -->
+
+                    </div>
+                </section>
+
+                <!-- Reviews -->
+                <section class="detail-block" id="reviews">
+                    <h2 class="block-title">Misafir Değerlendirmeleri</h2>
+
+                    <div class="review-summary">
+                        <div class="review-score-box">
+                            <span class="review-big">8,7</span>
+                            <strong>Çok İyi</strong>
+                            <span>2.184 değerlendirme</span>
+                        </div>
+
+                        <div class="review-bars">
+                            @foreach (var r in ratings)
+                            {
+                                <div class="bar-row">
+                                    <span class="bar-label">@r.Item1</span>
+                                    <div class="bar-track"><div class="bar-fill" style="width: @(r.Item3)%"></div></div>
+                                    <span class="bar-value">@r.Item2</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <figure class="review-card">
+                                <blockquote>"Konumu çok iyiydi, metroya ve tren istasyonuna oldukça yakın."</blockquote>
+                                <figcaption>
+                                    <span class="avatar">E</span>
+                                    <span><strong>Elif</strong><small>Türkiye, Ekim 2026</small></span>
+                                    <span class="mini-score">9,0</span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="review-card">
+                                <blockquote>"Odalar temiz ve moderndi, personel ilgiliydi."</blockquote>
+                                <figcaption>
+                                    <span class="avatar">M</span>
+                                    <span><strong>Mert</strong><small>Türkiye, Eylül 2026</small></span>
+                                    <span class="mini-score">8,5</span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Booking Summary -->
+            <aside class="col-lg-4">
+                <div class="booking-card">
+                    <h2 class="booking-title">Konaklama Özeti</h2>
+
+                    <dl class="booking-list">
+                        <div><dt><i class="bi bi-box-arrow-in-right"></i> Giriş</dt><dd>28 Ekim 2026</dd></div>
+                        <div><dt><i class="bi bi-box-arrow-right"></i> Çıkış</dt><dd>31 Ekim 2026</dd></div>
+                        <div><dt><i class="bi bi-moon"></i> Süre</dt><dd>3 Gece</dd></div>
+                        <div><dt><i class="bi bi-people"></i> Misafir</dt><dd>2 Yetişkin, 1 Çocuk</dd></div>
+                        <div><dt><i class="bi bi-door-closed"></i> Oda</dt><dd>1 Oda</dd></div>
+                    </dl>
+
+                    <div class="booking-price">
+                        <span class="price-meta">Başlangıç fiyatı</span>
+                        <span class="price price-lg">€428</span>
+                        <span class="price-meta">3 gece için</span>
+                    </div>
+
+                    <dl class="booking-total">
+                        <div><dt>Konaklama</dt><dd>€428</dd></div>
+                        <div><dt>Vergiler ve ücretler</dt><dd>€48</dd></div>
+                        <div class="total-row"><dt>Toplam</dt><dd>€476</dd></div>
+                    </dl>
+
+                    <a href="#rooms" class="btn btn-book w-100">
+                        <i class="bi bi-door-open"></i> Oda Seç
+                    </a>
+
+                    <ul class="trust-list">
+                        <li><i class="bi bi-check2"></i> Anında Onay</li>
+                        <li><i class="bi bi-check2"></i> Güvenli İşlem</li>
+                        <li><i class="bi bi-check2"></i> Ücretsiz İptal Seçenekleri</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Hotel Photos Slider -->
+        <section class="detail-block photos-block" id="hotelPhotos">
+            <div class="photos-head">
+                <div>
+                    <h2 class="block-title">NYX Hotel Milan Fotoğrafları</h2>
+                    <p class="block-text">Odaları, ortak alanları ve otelin sunduğu imkanları daha yakından inceleyin.</p>
+                </div>
+                <div class="slider-nav">
+                    <button type="button" class="slider-btn" data-dir="-1" aria-label="Önceki fotoğraflar"><i class="bi bi-chevron-left"></i></button>
+                    <button type="button" class="slider-btn" data-dir="1" aria-label="Sonraki fotoğraflar"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+
+            @* @foreach (var photo in Model.PhotoUrls) *@
+            <div class="photo-track" id="photoTrack" tabindex="0" aria-label="Otel fotoğrafları kaydırılabilir alan">
+                @foreach (var p in photos)
+                {
+                    <figure class="photo-item">
+                        <a href="#" class="photo-frame" aria-label="@p.Item1 fotoğrafını büyüt">
+                            <img src="https://images.unsplash.com/@(p.Item3)?w=900&q=80&auto=format&fit=crop" alt="@p.Item1" loading="lazy">
+                            <span class="photo-zoom"><i class="bi bi-arrows-fullscreen"></i></span>
+                        </a>
+                        <figcaption><span class="photo-cat">@p.Item1</span> @p.Item2</figcaption>
+                    </figure>
+                }
+            </div>
+        </section>
+    </div>
+</main>
+
+@section Scripts {
+    <script src="~/js/hotel-detail.js" asp-append-version="true"></script>
+}

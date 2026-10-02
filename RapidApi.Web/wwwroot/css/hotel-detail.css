@@ -1,0 +1,1148 @@
+/* =========================================================
+   StayFinder - Otel Detay (Booking/HotelDetail)
+   ========================================================= */
+
+/* ---------- Ortak parçalar ---------- */
+.hotel-page {
+    padding: 0.5rem 0 5rem;
+}
+
+.stars {
+    color: var(--sf-star);
+    letter-spacing: 1px;
+}
+
+.rating-score {
+    min-width: 46px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sf-primary);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.05rem;
+    border-radius: 14px 14px 14px 4px;
+}
+
+.price-meta {
+    font-size: 0.8rem;
+    color: var(--sf-muted);
+}
+
+.price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--sf-ink);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.price-note {
+    font-size: 0.78rem;
+    color: var(--sf-muted);
+    margin-bottom: 0.8rem;
+}
+
+.btn-primary-sf {
+    background: var(--sf-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 0;
+    border-radius: var(--sf-radius-sm);
+    padding: 0.7rem 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary-sf:hover,
+.btn-primary-sf:focus-visible {
+    background: var(--sf-primary-dark);
+    color: #fff;
+}
+
+.media-badge {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    background: var(--sf-ink);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+}
+
+/* ---------- Breadcrumb ---------- */
+.sf-breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.sf-breadcrumb a {
+    color: var(--sf-muted);
+    font-weight: 600;
+}
+
+.sf-breadcrumb a:hover {
+    color: var(--sf-primary);
+}
+
+.sf-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "\F285";
+    font-family: "bootstrap-icons";
+    font-size: 0.65rem;
+    color: var(--sf-muted);
+    padding-top: 0.3rem;
+}
+
+.sf-breadcrumb .active {
+    color: var(--sf-ink);
+    font-weight: 700;
+}
+
+/* ---------- Hotel Heading ---------- */
+.hotel-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hotel-title {
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+    letter-spacing: -0.035em;
+    margin-bottom: 0.3rem;
+}
+
+.hotel-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.stars-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sf-muted);
+}
+
+.hotel-address {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    font-weight: 600;
+    color: var(--sf-ink);
+}
+
+.hotel-address i {
+    color: var(--sf-primary);
+}
+
+.map-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--sf-primary);
+    margin-left: 0.35rem;
+}
+
+.map-link:hover {
+    text-decoration: underline;
+}
+
+.heading-side {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.heading-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #fff;
+    border-radius: var(--sf-radius);
+    box-shadow: var(--sf-shadow-sm);
+    padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+    text-align: right;
+}
+
+.rating-text strong {
+    display: block;
+    color: var(--sf-ink);
+    line-height: 1.2;
+}
+
+.rating-text span {
+    font-size: 0.8rem;
+    color: var(--sf-muted);
+    white-space: nowrap;
+}
+
+.rating-score-lg {
+    min-width: 54px;
+    height: 54px;
+    font-size: 1.25rem;
+}
+
+.heading-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--sf-ink);
+    box-shadow: var(--sf-shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+}
+
+.icon-btn:hover {
+    color: var(--sf-primary);
+}
+
+/* Detay sayfasında favori butonu başlıkta yuvarlak buton (site.js bu sınıfı kullanır) */
+.fav-btn:hover,
+.fav-btn.is-active {
+    color: #D6455D;
+}
+
+/* ---------- Hotel Gallery ---------- */
+.hotel-gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 220px);
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.gallery-item {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--sf-radius);
+    background: linear-gradient(160deg, #DADDF6, #F5F6FA);
+}
+
+.gallery-main {
+    grid-row: span 2;
+    border-radius: var(--sf-radius-lg);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.04);
+}
+
+.gallery-tag {
+    position: absolute;
+    left: 0.7rem;
+    bottom: 0.7rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--sf-ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(27, 33, 64, 0.55);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease;
+}
+
+.gallery-more:hover .gallery-overlay {
+    background: rgba(27, 33, 64, 0.65);
+}
+
+/* ---------- Detay blokları ---------- */
+.detail-block {
+    background: #fff;
+    border-radius: var(--sf-radius-lg);
+    box-shadow: var(--sf-shadow-sm);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    scroll-margin-top: 1.5rem;
+}
+
+.block-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.1rem;
+}
+
+.block-head .block-title {
+    margin-bottom: 0.25rem;
+}
+
+.block-text {
+    color: var(--sf-muted);
+    font-size: 0.95rem;
+    margin: 0 0 1.5rem;
+}
+
+/* Otel hakkında */
+.about-text p {
+    max-width: 68ch;
+    margin-bottom: 0.9rem;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+}
+
+.tag-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--sf-primary);
+    background: var(--sf-primary-soft);
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+}
+
+/* Özellikler */
+.facility-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    height: 100%;
+    padding: 0.6rem;
+    border-radius: var(--sf-radius);
+    transition: background-color 0.2s ease;
+}
+
+.facility-item:hover {
+    background: var(--sf-bg-soft);
+}
+
+.facility-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--sf-primary-soft);
+    color: var(--sf-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.facility-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    min-width: 0;
+}
+
+.facility-text strong {
+    color: var(--sf-ink);
+    font-size: 0.92rem;
+}
+
+.facility-text small {
+    color: var(--sf-muted);
+    font-size: 0.8rem;
+}
+
+/* Konum */
+.location-card {
+    border-radius: var(--sf-radius);
+    overflow: hidden;
+    background: var(--sf-bg-soft);
+}
+
+.map-placeholder {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+}
+
+.map-placeholder svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.map-pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.map-pin i {
+    font-size: 2.6rem;
+    color: var(--sf-primary);
+    line-height: 1;
+    filter: drop-shadow(0 6px 10px rgba(59, 63, 182, 0.35));
+}
+
+.map-pin-label {
+    background: var(--sf-ink);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+}
+
+.location-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.location-address {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 700;
+    color: var(--sf-ink);
+    margin-bottom: 1rem;
+}
+
+.location-address i {
+    color: var(--sf-primary);
+}
+
+.nearby-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nearby-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--sf-line);
+    font-size: 0.92rem;
+}
+
+.nearby-list span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nearby-list i {
+    color: var(--sf-muted);
+}
+
+.nearby-list strong {
+    color: var(--sf-ink);
+    white-space: nowrap;
+}
+
+/* Odalar */
+.room-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.room-card {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 180px;
+    gap: 1.25rem;
+    padding: 0.75rem;
+    border-radius: var(--sf-radius);
+    background: var(--sf-bg-soft);
+    transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.room-card:hover {
+    background: #fff;
+    box-shadow: var(--sf-shadow);
+}
+
+.room-card-featured {
+    background: #fff;
+    box-shadow: 0 0 0 2px var(--sf-primary);
+}
+
+.room-card-featured:hover {
+    box-shadow: 0 0 0 2px var(--sf-primary), var(--sf-shadow);
+}
+
+.room-media {
+    position: relative;
+    min-height: 170px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #DADDF6, #F5F6FA);
+}
+
+.room-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.room-info {
+    padding: 0.5rem 0;
+    min-width: 0;
+}
+
+.room-name {
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
+}
+
+.room-specs,
+.room-perks {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.6rem;
+}
+
+.room-specs {
+    gap: 0.35rem 1.1rem;
+    font-size: 0.88rem;
+    color: var(--sf-ink);
+    font-weight: 600;
+}
+
+.room-specs li,
+.room-perks li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.room-specs i {
+    color: var(--sf-primary);
+}
+
+.room-perks {
+    gap: 0.4rem;
+}
+
+.room-perks li {
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #fff;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+}
+
+.room-card:hover .room-perks li,
+.room-card-featured .room-perks li {
+    background: var(--sf-bg-soft);
+}
+
+.room-perks .perk-positive,
+.room-card:hover .room-perks .perk-positive,
+.room-card-featured .room-perks .perk-positive {
+    color: var(--sf-success);
+    background: var(--sf-success-soft);
+}
+
+.policy-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--sf-muted);
+    font-weight: 600;
+}
+
+.policy-free {
+    color: var(--sf-success);
+}
+
+.room-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: right;
+    padding: 0.5rem 0.5rem 0.25rem 0;
+}
+
+/* Değerlendirmeler */
+.review-summary {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+}
+
+.review-score-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--sf-primary-soft);
+    border-radius: var(--sf-radius);
+    padding: 1.5rem 1rem;
+}
+
+.review-big {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--sf-primary);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.review-score-box strong {
+    color: var(--sf-ink);
+    font-size: 1.05rem;
+}
+
+.review-score-box span:last-child {
+    font-size: 0.8rem;
+    color: var(--sf-muted);
+}
+
+.review-bars {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 2rem;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px;
+    grid-template-areas:
+        "label value"
+        "track track";
+    gap: 0.3rem 0.5rem;
+    align-items: center;
+}
+
+.bar-label {
+    grid-area: label;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--sf-ink);
+}
+
+.bar-value {
+    grid-area: value;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--sf-ink);
+    text-align: right;
+}
+
+.bar-track {
+    grid-area: track;
+    height: 8px;
+    background: var(--sf-line);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: var(--sf-primary);
+    border-radius: 999px;
+}
+
+.review-card {
+    height: 100%;
+    margin: 0;
+    background: var(--sf-bg-soft);
+    border-radius: var(--sf-radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.review-card blockquote {
+    margin: 0;
+    color: var(--sf-ink);
+    font-weight: 600;
+}
+
+.review-card figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.review-card figcaption > span:nth-child(2) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.review-card figcaption strong {
+    color: var(--sf-ink);
+    font-size: 0.9rem;
+}
+
+.review-card figcaption small {
+    color: var(--sf-muted);
+    font-size: 0.78rem;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--sf-ink);
+    color: #fff;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mini-score {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--sf-primary);
+    background: var(--sf-primary-soft);
+    padding: 0.2rem 0.55rem;
+    border-radius: 8px;
+}
+
+/* ---------- Booking Summary ---------- */
+.booking-card {
+    background: #fff;
+    border-radius: var(--sf-radius-lg);
+    box-shadow: var(--sf-shadow);
+    padding: 1.75rem;
+}
+
+@media (min-width: 992px) {
+    .booking-card {
+        position: sticky;
+        top: 1.5rem;
+    }
+}
+
+.booking-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.1rem;
+}
+
+.booking-list,
+.booking-total {
+    margin: 0;
+}
+
+.booking-list > div,
+.booking-total > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.55rem 0;
+}
+
+.booking-list > div + div {
+    border-top: 1px solid var(--sf-line);
+}
+
+.booking-list dt,
+.booking-total dt {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--sf-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.booking-list dd,
+.booking-total dd {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--sf-ink);
+    text-align: right;
+}
+
+.booking-price {
+    display: flex;
+    flex-direction: column;
+    background: var(--sf-bg-soft);
+    border-radius: var(--sf-radius);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.price-lg {
+    font-size: 2.1rem;
+}
+
+.booking-total > div {
+    padding: 0.35rem 0;
+}
+
+.booking-total .total-row {
+    border-top: 1px solid var(--sf-line);
+    margin-top: 0.35rem;
+    padding-top: 0.75rem;
+}
+
+.booking-total .total-row dt,
+.booking-total .total-row dd {
+    color: var(--sf-ink);
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.btn-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    background: var(--sf-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border: 0;
+    border-radius: var(--sf-radius);
+    padding: 0.95rem 1rem;
+    box-shadow: 0 10px 24px rgba(59, 63, 182, 0.35);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-book:hover,
+.btn-book:focus-visible {
+    background: var(--sf-primary-dark);
+    color: #fff;
+    box-shadow: 0 14px 28px rgba(59, 63, 182, 0.4);
+}
+
+.trust-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.trust-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--sf-text);
+}
+
+.trust-list i {
+    color: var(--sf-success);
+    font-size: 1.05rem;
+}
+
+/* ---------- Hotel Photos Slider ---------- */
+.photos-block {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.photos-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.photos-head .block-title {
+    margin-bottom: 0.25rem;
+}
+
+.photos-head .block-text {
+    margin: 0;
+}
+
+.slider-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.slider-btn {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--sf-bg-soft);
+    color: var(--sf-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.slider-btn:hover {
+    background: var(--sf-primary);
+    color: #fff;
+}
+
+.photo-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2rem) / 3);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sf-line) transparent;
+}
+
+.photo-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.photo-track::-webkit-scrollbar-thumb {
+    background: var(--sf-line);
+    border-radius: 999px;
+}
+
+.photo-item {
+    margin: 0;
+    scroll-snap-align: start;
+}
+
+.photo-frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--sf-radius);
+    overflow: hidden;
+    background: linear-gradient(160deg, #DADDF6, #F5F6FA);
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.photo-zoom {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--sf-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.photo-frame:hover img {
+    transform: scale(1.04);
+}
+
+.photo-frame:hover .photo-zoom,
+.photo-frame:focus-visible .photo-zoom {
+    opacity: 1;
+}
+
+.photo-item figcaption {
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem 0.25rem 0;
+    font-size: 0.85rem;
+    color: var(--sf-muted);
+    line-height: 1.35;
+}
+
+.photo-cat {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--sf-ink);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1199.98px) {
+    .room-card {
+        grid-template-columns: 180px minmax(0, 1fr) 160px;
+    }
+
+    .review-bars {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tablet ve mobil */
+@media (max-width: 991.98px) {
+    .hotel-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hotel-gallery {
+        grid-template-rows: repeat(2, 160px);
+    }
+
+    /* Rezervasyon paneli içerikten sonra, fotoğraf slider'ından önce görünür */
+    .detail-layout > aside {
+        order: 2;
+    }
+
+    .photo-track {
+        grid-auto-columns: calc((100% - 1rem) / 2);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .detail-block {
+        padding: 1.4rem;
+    }
+
+    .block-title {
+        font-size: 1.25rem;
+    }
+
+    /* Galeri: büyük görsel üstte, 4 küçük görsel altta */
+    .hotel-gallery {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 220px 80px;
+        gap: 0.5rem;
+    }
+
+    .gallery-main {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .gallery-tag {
+        display: none;
+    }
+
+    .gallery-overlay {
+        font-size: 0.8rem;
+    }
+
+    .gallery-overlay i {
+        display: none;
+    }
+
+    /* Oda kartları dikey */
+    .room-card {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .room-media {
+        aspect-ratio: 16 / 9;
+        min-height: 0;
+    }
+
+    .room-info {
+        padding: 0.25rem 0.5rem 0;
+    }
+
+    .room-price {
+        align-items: stretch;
+        text-align: left;
+        padding: 0.75rem 0.5rem 0.5rem;
+        border-top: 1px solid var(--sf-line);
+    }
+
+    .review-summary {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .nearby-list {
+        grid-template-columns: 1fr;
+    }
+
+    .map-placeholder {
+        height: 200px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .heading-side {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .hotel-gallery {
+        grid-template-rows: 200px 64px;
+    }
+
+    .photos-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .photo-track {
+        grid-auto-columns: 88%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photo-track {
+        scroll-behavior: auto;
+    }
+}

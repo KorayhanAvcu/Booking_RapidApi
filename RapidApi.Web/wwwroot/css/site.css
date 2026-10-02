@@ -1,0 +1,282 @@
+/* =========================================================
+   StayFinder - Ortak stiller (tüm sayfalarda yüklenir)
+   ========================================================= */
+
+/* ---------- Tasarım değişkenleri ---------- */
+:root {
+    --sf-ink: #1B2140;
+    --sf-text: #4A5070;
+    --sf-muted: #7A7F9A;
+    --sf-primary: #3B3FB6;
+    --sf-primary-dark: #2E3195;
+    --sf-primary-soft: #EEF0FC;
+    --sf-bg: #FFFFFF;
+    --sf-bg-soft: #F5F6FA;
+    --sf-line: #E6E8F0;
+    --sf-success: #1E8A5A;
+    --sf-success-soft: #E7F5EE;
+    --sf-star: #F2A93B;
+
+    --sf-radius-sm: 10px;
+    --sf-radius: 16px;
+    --sf-radius-lg: 24px;
+
+    --sf-shadow-sm: 0 2px 8px rgba(27, 33, 64, 0.05);
+    --sf-shadow: 0 10px 30px rgba(27, 33, 64, 0.08);
+    --sf-shadow-lg: 0 24px 60px rgba(27, 33, 64, 0.12);
+
+    --sf-font: "Manrope", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ---------- Genel ---------- */
+body {
+    font-family: var(--sf-font);
+    color: var(--sf-text);
+    background: var(--sf-bg-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Ana sayfanın gövdesi beyaz, diğer sayfalar açık gri */
+body.page-home {
+    background: var(--sf-bg);
+}
+
+h1, h2, h3, h4 {
+    color: var(--sf-ink);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1280px;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(59, 63, 182, 0.35);
+    outline-offset: 2px;
+}
+
+/* ---------- Header / Navbar ---------- */
+.site-header {
+    background: var(--sf-bg-soft);
+}
+
+.site-header .navbar {
+    padding: 1.25rem 0;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--sf-primary);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+}
+
+.brand-text {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--sf-ink);
+    letter-spacing: -0.03em;
+}
+
+.brand-text span {
+    color: var(--sf-primary);
+}
+
+.main-menu .nav-link {
+    color: var(--sf-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: 999px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.main-menu .nav-link:hover {
+    color: var(--sf-ink);
+}
+
+.main-menu .nav-link.active {
+    color: var(--sf-primary);
+    background: #fff;
+    box-shadow: var(--sf-shadow-sm);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.currency-pill {
+    border: 0;
+    background: #fff;
+    color: var(--sf-ink);
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    box-shadow: var(--sf-shadow-sm);
+}
+
+.account-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--sf-ink);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease;
+}
+
+.account-btn:hover {
+    background: var(--sf-primary);
+    color: #fff;
+}
+
+.navbar-toggler {
+    border: 0;
+    font-size: 1.6rem;
+    color: var(--sf-ink);
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    background: var(--sf-ink);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4rem 0 2rem;
+}
+
+.footer-brand .brand-text {
+    color: #fff;
+}
+
+.footer-brand .brand-text span {
+    color: #A9ADF0;
+}
+
+.footer-text {
+    margin: 1rem 0 0;
+    max-width: 30ch;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem 2rem;
+    margin: 0;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.875rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.footer-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.footer-social a:hover {
+    background: var(--sf-primary);
+}
+
+/* =========================================================
+   Responsive (ortak bölümler)
+   ========================================================= */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: #fff;
+        border-radius: var(--sf-radius);
+        box-shadow: var(--sf-shadow);
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .main-menu .nav-link.active {
+        box-shadow: none;
+        background: var(--sf-primary-soft);
+    }
+
+    .nav-actions {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--sf-line);
+    }
+
+    .footer-links {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Hareket azaltma tercihine saygı */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
