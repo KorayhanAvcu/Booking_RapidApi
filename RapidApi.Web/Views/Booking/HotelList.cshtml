@@ -1,104 +1,65 @@
+@model HotelListViewModel
 @{
-    ViewData["Title"] = "Milano Otelleri";
-    ViewData["Description"] = "Milano bölgesindeki konaklama seçeneklerini keşfedin.";
+    var name = string.IsNullOrWhiteSpace(Model.DestinationLabel) ? Model.Destination : Model.DestinationLabel;
+    var hasSearch = !string.IsNullOrWhiteSpace(Model.Destination);
+
+    ViewData["Title"] = hasSearch ? $"{name} Otelleri" : "Otel Ara";
+    ViewData["Description"] = hasSearch ? $"{name} bölgesindeki konaklama seçeneklerini keşfedin." : "Konaklama seçeneklerini keşfedin.";
     ViewData["ActivePage"] = "hotels";
 
-    // ---- Geçici örnek veri. Veritabanına bağlayınca Model.Hotels ile değiştirilecek. ----
-    var hotels = new List<HotelCardVm>
-    {
-        new() {
-            Id = 101, Name = "NYX Hotel Milan", Stars = 4,
-            Img = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80&auto=format&fit=crop",
-            MediaBadge = "Popüler Seçim",
-            Location = "Stazione Centrale, Milano", Distance = "Milano Centrale'ye 450 m",
-            Desc = "Şehir merkezine yakın, modern odaları ve güçlü ulaşım bağlantılarıyla Milano seyahatleri için ideal bir seçenek.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-snow", "Klima"), ("bi-cup-hot", "Bar"), ("bi-heart-pulse", "Fitness") },
-            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
-            Score = "8,7", Reviews = "2.184", Price = "€512", PriceNote = "+ €38 vergi ve ücret"
-        },
-        new() {
-            Id = 102, Name = "UNAHOTELS Galles Milano", Stars = 4,
-            Img = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80&auto=format&fit=crop",
-            Location = "Corso Buenos Aires, Milano", Distance = "Duomo'ya 2,1 km",
-            Desc = "Alışveriş caddesi Corso Buenos Aires'in başında, çatı terası ve şehir manzaralı odalarıyla keyifli bir konaklama.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-water", "Spa") },
-            BadgeKind = "deal", BadgeIcon = "bi-cup-hot", BadgeText = "Kahvaltı Dahil",
-            Score = "8,5", Reviews = "3.412", Price = "€449", PriceNote = "Vergiler ve ücretler dahil"
-        },
-        new() {
-            Id = 103, Name = "Rosa Grand Milano", Stars = 4,
-            Img = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80&auto=format&fit=crop",
-            MediaBadge = "En Çok Tercih Edilen",
-            Location = "Duomo, Milano", Distance = "Duomo'ya 200 m",
-            Desc = "Duomo Meydanı'na birkaç adım mesafede, iç avlulu sakin odaları ve zengin kahvaltısıyla merkezi bir otel.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-heart-pulse", "Fitness") },
-            BadgeKind = "view", BadgeIcon = "bi-eye", BadgeText = "Son 24 saatte 18 kez görüntülendi",
-            Score = "8,9", Reviews = "4.026", Price = "€684", PriceNote = "+ €52 vergi ve ücret"
-        },
-        new() {
-            Id = 104, Name = "Hotel Cavour", Stars = 4,
-            Img = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80&auto=format&fit=crop",
-            Location = "Brera, Milano", Distance = "Duomo'ya 900 m",
-            Desc = "Brera'nın sanat galerileri ve Montenapoleone mağazaları arasında, klasik dekorlu aile işletmesi bir otel.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-p-circle", "Otopark"), ("bi-snow", "Klima") },
-            Score = "8,3", Reviews = "1.538", Price = "€476", PriceNote = "Vergiler ve ücretler dahil"
-        },
-        new() {
-            Id = 105, Name = "NH Collection Milano President", Stars = 5,
-            Img = "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80&auto=format&fit=crop",
-            Location = "Milano Merkez, Milano", Distance = "Duomo'ya 500 m",
-            Desc = "Geniş odaları, spa merkezi ve özenli hizmetiyle iş ve tatil seyahatleri için şehrin kalbinde premium bir adres.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-water", "Spa"), ("bi-heart-pulse", "Fitness"), ("bi-p-circle", "Otopark") },
-            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
-            Score = "8,8", Reviews = "2.760", Price = "€790", PriceNote = "+ €61 vergi ve ücret"
-        },
-        new() {
-            Id = 106, Name = "Hotel Berna", Stars = 4,
-            Img = "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80&auto=format&fit=crop",
-            MediaBadge = "Popüler Seçim",
-            Location = "Stazione Centrale, Milano", Distance = "Milano Centrale'ye 300 m",
-            Desc = "Merkez tren istasyonuna yürüme mesafesinde, minibardaki ücretsiz içecekleri ve güler yüzlü ekibiyle bilinen bir otel.",
-            Facilities = new() { ("bi-wifi", "Ücretsiz Wi-Fi"), ("bi-cup-hot", "Kahvaltı Dahil"), ("bi-snow", "Klima"), ("bi-p-circle", "Otopark") },
-            BadgeKind = "deal", BadgeIcon = "bi-check2-circle", BadgeText = "Ücretsiz İptal",
-            Score = "8,6", Reviews = "5.193", Price = "€428", PriceNote = "Vergiler ve ücretler dahil"
-        }
-    };
+    var tr = new System.Globalization.CultureInfo("tr-TR");
+    var checkinStr = Model.Checkin.ToString("yyyy-MM-dd");
+    var checkoutStr = Model.Checkout.ToString("yyyy-MM-dd");
+    var guestText = $"{Model.Adults} yetişkin" + (Model.ChildCount > 0 ? $", {Model.ChildCount} çocuk" : "");
 
-    // ---- Filtre seçenekleri: (değer, etiket, adet, seçili mi) ----
-    var starOptions = new[] { (5, 24, false), (4, 86, true), (3, 142, false), (2, 57, false) };
-    var scoreOptions = new[] { (9, "Olağanüstü", 38, false), (8, "Çok İyi", 164, true), (7, "İyi", 271, false), (6, "Keyifli", 352, false) };
-    var typeOptions = new[] {
-        ("hotel", "Otel", 248, true), ("apartment", "Daire", 96, false), ("aparthotel", "Apart Otel", 41, false),
-        ("resort", "Resort", 7, false), ("hostel", "Hostel", 44, false) };
-    var facilityOptions = new[] {
-        ("wifi", "Ücretsiz Wi-Fi", 412, true), ("breakfast", "Kahvaltı Dahil", 187, false), ("parking", "Otopark", 134, false),
-        ("ac", "Klima", 398, false), ("pool", "Havuz", 22, false), ("spa", "Spa", 31, false),
-        ("fitness", "Fitness Merkezi", 76, false), ("pets", "Evcil Hayvan Kabul Edilir", 118, false) };
-    var districtOptions = new[] {
-        ("centro", "Milano Merkez", 128, false), ("centrale", "Stazione Centrale", 94, false),
-        ("navigli", "Navigli", 47, false), ("duomo", "Duomo", 63, false), ("brera", "Brera", 38, false) };
-}
+    // Seçili filtreler
+    var selectedStars = (Model.Stars ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var hasFilters = selectedStars.Length > 0 || Model.MinScore.HasValue || Model.FreeCancellation
+                     || Model.Breakfast || Model.MinPrice.HasValue || Model.MaxPrice.HasValue;
 
-@functions {
-    public class HotelCardVm
+    // Sayfalama linkleri: arama + filtreler korunur, sadece sayfa değişir
+    Dictionary<string, string> PageRoute(int p)
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = "";
-        public int Stars { get; set; }
-        public string Img { get; set; } = "";
-        public string? MediaBadge { get; set; }
-        public string Location { get; set; } = "";
-        public string Distance { get; set; } = "";
-        public string Desc { get; set; } = "";
-        public List<(string Icon, string Text)> Facilities { get; set; } = new();
-        public string? BadgeKind { get; set; }   // "deal" veya "view"
-        public string? BadgeIcon { get; set; }
-        public string? BadgeText { get; set; }
-        public string Score { get; set; } = "";
-        public string Reviews { get; set; } = "";
-        public string Price { get; set; } = "";
-        public string PriceNote { get; set; } = "";
+        var d = new Dictionary<string, string?>
+        {
+            ["destination"] = Model.Destination,
+            ["checkin"] = checkinStr,
+            ["checkout"] = checkoutStr,
+            ["adults"] = Model.Adults.ToString(),
+            ["childrenAges"] = Model.ChildrenAges,
+            ["rooms"] = Model.Rooms.ToString(),
+            ["currency"] = Model.Currency,
+            ["sortBy"] = Model.SortBy,
+            ["stars"] = Model.Stars,
+            ["minScore"] = Model.MinScore?.ToString(),
+            ["freeCancellation"] = Model.FreeCancellation ? "true" : null,
+            ["breakfast"] = Model.Breakfast ? "true" : null,
+            ["minPrice"] = Model.MinPrice?.ToString(),
+            ["maxPrice"] = Model.MaxPrice?.ToString(),
+            ["page"] = p.ToString()
+        };
+        return d.Where(kv => !string.IsNullOrEmpty(kv.Value)).ToDictionary(kv => kv.Key, kv => kv.Value!);
     }
+
+    // "Tümünü Temizle": aramayı korur, filtreleri ve sayfayı sıfırlar
+    var clearRoute = new Dictionary<string, string>
+    {
+        ["destination"] = Model.Destination,
+        ["checkin"] = checkinStr,
+        ["checkout"] = checkoutStr,
+        ["adults"] = Model.Adults.ToString(),
+        ["rooms"] = Model.Rooms.ToString(),
+        ["currency"] = Model.Currency
+    };
+    if (!string.IsNullOrEmpty(Model.ChildrenAges)) clearRoute["childrenAges"] = Model.ChildrenAges;
+    if (!string.IsNullOrEmpty(Model.SortBy)) clearRoute["sortBy"] = Model.SortBy;
+
+    var firstItem = Model.Hotels.Count == 0 ? 0 : (Model.Page - 1) * Model.PageSize + 1;
+    var lastItem = Model.Hotels.Count == 0 ? 0 : firstItem + Model.Hotels.Count - 1;
+    var pageStart = Math.Max(1, Model.Page - 2);
+    var pageEnd = Math.Min(Model.TotalPages, Model.Page + 2);
+
+    var scoreOptions = new[] { (9, "Olağanüstü"), (8, "Çok İyi"), (7, "İyi"), (6, "Keyifli") };
 }
 
 @section Styles {
@@ -114,21 +75,27 @@
                 <ol class="breadcrumb sf-breadcrumb">
                     <li class="breadcrumb-item"><a asp-action="Index">Ana Sayfa</a></li>
                     <li class="breadcrumb-item"><a asp-action="HotelList">Oteller</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Milano</li>
+                    @if (hasSearch)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@name</li>
+                    }
                 </ol>
             </nav>
 
-            <h1 class="page-title">Milano Otelleri</h1>
-            <p class="page-text">Milano bölgesindeki konaklama seçeneklerini keşfedin.</p>
+            <h1 class="page-title">@(hasSearch ? $"{name} Otelleri" : "Otel Ara")</h1>
+            <p class="page-text">
+                @(hasSearch ? $"{name} bölgesindeki konaklama seçeneklerini keşfedin." : "Gitmek istediğiniz yeri yazın, konaklama seçeneklerini keşfedin.")
+            </p>
 
-            <form class="summary-panel" asp-controller="Booking" asp-action="HotelList" method="get" role="search">
+            @* Bu form hem arama alanlarını hem de sayfadaki filtre/sıralama alanlarını gönderir (form="searchForm") *@
+            <form id="searchForm" class="summary-panel" asp-controller="Booking" asp-action="HotelList" method="get" role="search">
                 <div class="row g-2 g-lg-0 align-items-stretch">
                     <div class="col-12 col-md-6 col-lg-3">
                         <label class="summary-field" for="sDestination">
                             <i class="bi bi-geo-alt"></i>
                             <span class="summary-body">
                                 <span class="summary-label">Lokasyon</span>
-                                <input type="text" id="sDestination" name="destination" class="summary-input" value="Milano, İtalya">
+                                <input type="text" id="sDestination" name="destination" class="summary-input" value="@Model.Destination" placeholder="Şehir veya bölge" required>
                             </span>
                         </label>
                     </div>
@@ -137,7 +104,7 @@
                             <i class="bi bi-calendar3"></i>
                             <span class="summary-body">
                                 <span class="summary-label">Giriş</span>
-                                <input type="text" id="sCheckin" name="checkin" class="summary-input" value="28 Ekim 2026">
+                                <input type="date" id="sCheckin" name="checkin" class="summary-input" value="@checkinStr">
                             </span>
                         </label>
                     </div>
@@ -146,37 +113,45 @@
                             <i class="bi bi-calendar3"></i>
                             <span class="summary-body">
                                 <span class="summary-label">Çıkış</span>
-                                <input type="text" id="sCheckout" name="checkout" class="summary-input" value="31 Ekim 2026">
+                                <input type="date" id="sCheckout" name="checkout" class="summary-input" value="@checkoutStr">
                             </span>
                         </label>
                     </div>
-                    <div class="col-12 col-md-4 col-lg">
-                        <div class="summary-field">
+                    <div class="col-6 col-md-3 col-lg-auto">
+                        <label class="summary-field" for="sAdults">
                             <i class="bi bi-people"></i>
                             <span class="summary-body">
-                                <span class="summary-label">Misafir</span>
-                                <span class="summary-value">2 Yetişkin, 1 Çocuk</span>
+                                <span class="summary-label">Yetişkin</span>
+                                <input type="number" id="sAdults" name="adults" class="summary-input" min="1" max="30" value="@Model.Adults">
                             </span>
-                        </div>
+                        </label>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-auto">
-                        <div class="summary-field">
+                    <div class="col-6 col-md-3 col-lg">
+                        <label class="summary-field" for="sChildren">
+                            <span class="summary-body">
+                                <span class="summary-label">Çocuk Yaşları</span>
+                                <input type="text" id="sChildren" name="childrenAges" class="summary-input" value="@Model.ChildrenAges" placeholder="Örn: 5,8">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-auto">
+                        <label class="summary-field" for="sRooms">
                             <i class="bi bi-door-closed"></i>
                             <span class="summary-body">
                                 <span class="summary-label">Oda</span>
-                                <span class="summary-value">1 Oda</span>
+                                <input type="number" id="sRooms" name="rooms" class="summary-input" min="1" max="10" value="@Model.Rooms">
                             </span>
-                        </div>
+                        </label>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-auto">
+                    <div class="col-6 col-md-3 col-lg-auto">
                         <label class="summary-field" for="sCurrency">
                             <span class="summary-body">
                                 <span class="summary-label">Para Birimi</span>
                                 <select id="sCurrency" name="currency" class="summary-input summary-select">
-                                    <option value="EUR" selected>EUR</option>
-                                    <option value="USD">USD</option>
-                                    <option value="TRY">TRY</option>
-                                    <option value="GBP">GBP</option>
+                                    <option value="EUR" selected="@(Model.Currency == "EUR")">EUR</option>
+                                    <option value="USD" selected="@(Model.Currency == "USD")">USD</option>
+                                    <option value="TRY" selected="@(Model.Currency == "TRY")">TRY</option>
+                                    <option value="GBP" selected="@(Model.Currency == "GBP")">GBP</option>
                                 </select>
                             </span>
                         </label>
@@ -195,11 +170,23 @@
     <section class="results-section">
         <div class="container">
 
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-warning" role="alert">@ViewBag.Error</div>
+            }
+
             <!-- Results Toolbar -->
             <div class="results-toolbar">
                 <div class="results-count">
-                    <h2>Milano için <strong>436 konaklama</strong> bulundu</h2>
-                    <span>28 – 31 Ekim 2026, 3 gece</span>
+                    @if (hasSearch)
+                    {
+                        <h2>@name için <strong>@Model.TotalCount.ToString("N0", tr) konaklama</strong> bulundu</h2>
+                        <span>@Model.Checkin.ToString("d MMMM", tr) – @Model.Checkout.ToString("d MMMM yyyy", tr), @Model.Nights gece</span>
+                    }
+                    else
+                    {
+                        <h2>Arama yapmak için bir lokasyon girin</h2>
+                    }
                 </div>
 
                 <div class="toolbar-actions">
@@ -211,12 +198,11 @@
 
                     <div class="sort-box">
                         <label for="sortBy"><i class="bi bi-arrow-down-up"></i> Sırala</label>
-                        <select id="sortBy" name="sortBy" class="form-select sort-select">
-                            <option value="recommended" selected>Önerilen</option>
-                            <option value="price_asc">En Düşük Fiyat</option>
-                            <option value="score_desc">En Yüksek Puan</option>
-                            <option value="stars_desc">Yıldıza Göre</option>
-                            <option value="reviews_desc">En Çok Değerlendirilen</option>
+                        <select id="sortBy" name="sortBy" form="searchForm" data-autosubmit class="form-select sort-select">
+                            <option value="" selected="@(string.IsNullOrEmpty(Model.SortBy))">Önerilen</option>
+                            <option value="price" selected="@(Model.SortBy == "price")">En Düşük Fiyat</option>
+                            <option value="review_score" selected="@(Model.SortBy == "review_score")">En Yüksek Puan</option>
+                            <option value="class_descending" selected="@(Model.SortBy == "class_descending")">Yıldıza Göre</option>
                         </select>
                     </div>
 
@@ -236,7 +222,10 @@
                             <div class="filters-head">
                                 <h2 id="filtersTitle">Filtreler</h2>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="#" class="clear-link">Tümünü Temizle</a>
+                                    @if (hasFilters)
+                                    {
+                                        <a asp-action="HotelList" asp-all-route-data="clearRoute" class="clear-link">Tümünü Temizle</a>
+                                    }
                                     <button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas"
                                             data-bs-target="#filtersPanel" aria-label="Kapat"></button>
                                 </div>
@@ -248,33 +237,28 @@
                                 <div class="accordion-item">
                                     <h3 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fPrice" aria-expanded="true" aria-controls="fPrice">
-                                            Gecelik Fiyat
+                                            Toplam Fiyat (@Model.Currency)
                                         </button>
                                     </h3>
                                     <div id="fPrice" class="accordion-collapse collapse show">
                                         <div class="accordion-body">
-                                            <div class="price-range" aria-hidden="true">
-                                                <div class="price-track"><div class="price-fill"></div></div>
-                                                <span class="price-thumb" style="left: 12%"></span>
-                                                <span class="price-thumb" style="left: 78%"></span>
-                                            </div>
-                                            <div class="price-scale"><span>€50</span><span>€500+</span></div>
-                                            <div class="row g-2 mt-1">
+                                            <div class="row g-2">
                                                 <div class="col-6">
                                                     <label class="mini-label" for="minPrice">Minimum</label>
                                                     <div class="price-input">
-                                                        <span>€</span>
-                                                        <input type="number" id="minPrice" name="minPrice" value="100" min="0">
+                                                        <span>@Model.Currency</span>
+                                                        <input type="number" id="minPrice" name="minPrice" form="searchForm" min="0" value="@Model.MinPrice">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <label class="mini-label" for="maxPrice">Maksimum</label>
                                                     <div class="price-input">
-                                                        <span>€</span>
-                                                        <input type="number" id="maxPrice" name="maxPrice" value="400" min="0">
+                                                        <span>@Model.Currency</span>
+                                                        <input type="number" id="maxPrice" name="maxPrice" form="searchForm" min="0" value="@Model.MaxPrice">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <button type="submit" form="searchForm" class="btn btn-primary-sf w-100 mt-2">Uygula</button>
                                         </div>
                                     </div>
                                 </div>
@@ -288,12 +272,12 @@
                                     </h3>
                                     <div id="fStars" class="accordion-collapse collapse show">
                                         <div class="accordion-body">
-                                            @foreach (var o in starOptions)
+                                            @foreach (var n in new[] { 5, 4, 3, 2, 1 })
                                             {
                                                 <label class="filter-option">
-                                                    <input class="form-check-input" type="checkbox" name="stars" value="@o.Item1" checked="@o.Item3">
-                                                    <span class="option-text"><span class="stars-inline">@(new string('★', o.Item1))</span> @o.Item1 Yıldız</span>
-                                                    <span class="option-count">@o.Item2</span>
+                                                    <input class="form-check-input" type="checkbox" name="stars" form="searchForm" data-autosubmit
+                                                           value="@n" checked="@(selectedStars.Contains(n.ToString()))">
+                                                    <span class="option-text"><span class="stars-inline">@(new string('★', n))</span> @n Yıldız</span>
                                                 </label>
                                             }
                                         </div>
@@ -309,77 +293,42 @@
                                     </h3>
                                     <div id="fScore" class="accordion-collapse collapse show">
                                         <div class="accordion-body">
+                                            <label class="filter-option">
+                                                <input class="form-check-input" type="radio" name="minScore" form="searchForm" data-autosubmit
+                                                       value="" checked="@(!Model.MinScore.HasValue)">
+                                                <span class="option-text">Farketmez</span>
+                                            </label>
                                             @foreach (var o in scoreOptions)
                                             {
                                                 <label class="filter-option">
-                                                    <input class="form-check-input" type="radio" name="minScore" value="@o.Item1" checked="@o.Item4">
+                                                    <input class="form-check-input" type="radio" name="minScore" form="searchForm" data-autosubmit
+                                                           value="@o.Item1" checked="@(Model.MinScore == o.Item1)">
                                                     <span class="option-text"><span class="score-chip">@(o.Item1)+</span> @o.Item2</span>
-                                                    <span class="option-count">@o.Item3</span>
                                                 </label>
                                             }
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- D. Konaklama Türü -->
+                                <!-- D. Diğer -->
                                 <div class="accordion-item">
                                     <h3 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fType" aria-expanded="true" aria-controls="fType">
-                                            Konaklama Türü
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fOther" aria-expanded="true" aria-controls="fOther">
+                                            Diğer
                                         </button>
                                     </h3>
-                                    <div id="fType" class="accordion-collapse collapse show">
+                                    <div id="fOther" class="accordion-collapse collapse show">
                                         <div class="accordion-body">
-                                            @foreach (var o in typeOptions)
-                                            {
-                                                <label class="filter-option">
-                                                    <input class="form-check-input" type="checkbox" name="type" value="@o.Item1" checked="@o.Item4">
-                                                    <span class="option-text">@o.Item2</span>
-                                                    <span class="option-count">@o.Item3</span>
-                                                </label>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- E. Popüler Özellikler -->
-                                <div class="accordion-item">
-                                    <h3 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fFacilities" aria-expanded="false" aria-controls="fFacilities">
-                                            Popüler Özellikler
-                                        </button>
-                                    </h3>
-                                    <div id="fFacilities" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            @foreach (var o in facilityOptions)
-                                            {
-                                                <label class="filter-option">
-                                                    <input class="form-check-input" type="checkbox" name="facilities" value="@o.Item1" checked="@o.Item4">
-                                                    <span class="option-text">@o.Item2</span>
-                                                    <span class="option-count">@o.Item3</span>
-                                                </label>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- F. Bölge -->
-                                <div class="accordion-item">
-                                    <h3 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fDistrict" aria-expanded="false" aria-controls="fDistrict">
-                                            Bölge
-                                        </button>
-                                    </h3>
-                                    <div id="fDistrict" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            @foreach (var o in districtOptions)
-                                            {
-                                                <label class="filter-option">
-                                                    <input class="form-check-input" type="checkbox" name="district" value="@o.Item1" checked="@o.Item4">
-                                                    <span class="option-text">@o.Item2</span>
-                                                    <span class="option-count">@o.Item3</span>
-                                                </label>
-                                            }
+                                            <label class="filter-option">
+                                                <input class="form-check-input" type="checkbox" name="freeCancellation" form="searchForm" data-autosubmit
+                                                       value="true" checked="@Model.FreeCancellation">
+                                                <span class="option-text">Ücretsiz İptal</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input class="form-check-input" type="checkbox" name="breakfast" form="searchForm" data-autosubmit
+                                                       value="true" checked="@Model.Breakfast">
+                                                <span class="option-text">Kahvaltı Dahil</span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -387,8 +336,8 @@
 
                             <!-- Mobilde sonuçları göster butonu -->
                             <div class="filters-footer d-lg-none">
-                                <button type="button" class="btn btn-primary-sf w-100" data-bs-dismiss="offcanvas" data-bs-target="#filtersPanel">
-                                    436 sonucu göster
+                                <button type="submit" form="searchForm" class="btn btn-primary-sf w-100">
+                                    @Model.TotalCount.ToString("N0", tr) sonucu göster
                                 </button>
                             </div>
                         </div>
@@ -399,15 +348,25 @@
                 <div class="col-lg-9">
                     <div class="hotel-list">
 
-                        @foreach (var hotel in hotels)
+                        @if (Model.Hotels.Count == 0)
+                        {
+                            <div class="text-center text-muted py-5">
+                                <i class="bi bi-search fs-1 d-block mb-2"></i>
+                                @(hasSearch ? "Aramanıza ve filtrelerinize uygun konaklama bulunamadı." : "Henüz bir arama yapılmadı.")
+                            </div>
+                        }
+
+                        @foreach (var hotel in Model.Hotels)
                         {
                             <article class="hotel-card"
                                      data-hotel-id="@hotel.Id"
-                                     data-city="Milano" data-country="İtalya"
-                                     data-accommodation-type="Otel"
-                                     data-checkin="2026-10-28" data-checkout="2026-10-31">
+                                     data-city="@name"
+                                     data-checkin="@checkinStr" data-checkout="@checkoutStr">
                                 <div class="hotel-media">
-                                    <img src="@hotel.Img" alt="@hotel.Name" loading="lazy">
+                                    @if (!string.IsNullOrEmpty(hotel.Img))
+                                    {
+                                        <img src="@hotel.Img" alt="@hotel.Name" loading="lazy">
+                                    }
                                     <button type="button" class="fav-btn" aria-label="Favorilere ekle"><i class="bi bi-heart"></i></button>
                                     @if (!string.IsNullOrEmpty(hotel.MediaBadge))
                                     {
@@ -417,25 +376,46 @@
 
                                 <div class="hotel-info">
                                     <h3 class="hotel-name">
-                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id">@hotel.Name</a>
+                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id"
+                                           asp-route-checkin="@checkinStr" asp-route-checkout="@checkoutStr"
+                                           asp-route-adults="@Model.Adults" asp-route-childrenAges="@Model.ChildrenAges"
+                                           asp-route-rooms="@Model.Rooms" asp-route-currency="@Model.Currency"
+                                           asp-route-stars="@hotel.Stars" asp-route-score="@hotel.Score"
+                                           asp-route-scoreWord="@hotel.ScoreWord">@hotel.Name</a>
                                     </h3>
-                                    <div class="hotel-stars">
-                                        <span class="stars" aria-label="@hotel.Stars yıldız">@(new string('★', hotel.Stars))</span>
-                                        <span class="stars-text">@hotel.Stars Yıldızlı Otel</span>
-                                    </div>
-                                    <p class="hotel-location">
-                                        <i class="bi bi-geo-alt"></i>
-                                        <span>@hotel.Location</span>
-                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id" asp-fragment="location" class="map-link">Haritada göster</a>
-                                    </p>
-                                    <p class="hotel-distance"><i class="bi bi-signpost-2"></i> @hotel.Distance</p>
-                                    <p class="hotel-desc">@hotel.Desc</p>
-                                    <ul class="facility-list">
-                                        @foreach (var f in hotel.Facilities)
-                                        {
-                                            <li><i class="bi @f.Icon"></i> @f.Text</li>
-                                        }
-                                    </ul>
+
+                                    @if (hotel.Stars > 0)
+                                    {
+                                        <div class="hotel-stars">
+                                            <span class="stars" aria-label="@hotel.Stars yıldız">@(new string('★', hotel.Stars))</span>
+                                            <span class="stars-text">@hotel.Stars Yıldızlı Otel</span>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(hotel.Location))
+                                    {
+                                        <p class="hotel-location">
+                                            <i class="bi bi-geo-alt"></i>
+                                            <span>@hotel.Location</span>
+                                            <a asp-action="HotelDetail" asp-route-id="@hotel.Id" asp-fragment="location" class="map-link">Haritada göster</a>
+                                        </p>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(hotel.Distance))
+                                    {
+                                        <p class="hotel-distance"><i class="bi bi-signpost-2"></i> @hotel.Distance</p>
+                                    }
+
+                                    @if (hotel.Facilities.Count > 0)
+                                    {
+                                        <ul class="facility-list">
+                                            @foreach (var f in hotel.Facilities)
+                                            {
+                                                <li><i class="bi @f.Icon"></i> @f.Text</li>
+                                            }
+                                        </ul>
+                                    }
+
                                     @if (hotel.BadgeKind == "deal")
                                     {
                                         <span class="deal-badge"><i class="bi @hotel.BadgeIcon"></i> @hotel.BadgeText</span>
@@ -449,16 +429,26 @@
                                 <div class="hotel-side">
                                     <div class="rating">
                                         <div class="rating-text">
-                                            <strong>Çok İyi</strong>
+                                            <strong>@hotel.ScoreWord</strong>
                                             <span>@hotel.Reviews değerlendirme</span>
                                         </div>
                                         <span class="rating-score">@hotel.Score</span>
                                     </div>
                                     <div class="price-box">
-                                        <span class="price-meta">3 gece, 2 yetişkin, 1 çocuk</span>
+                                        <span class="price-meta">@Model.Nights gece, @guestText</span>
+                                        @if (!string.IsNullOrEmpty(hotel.OldPrice))
+                                        {
+                                            <s class="old-price">@hotel.OldPrice</s>
+                                        }
                                         <span class="price">@hotel.Price</span>
                                         <span class="price-note">@hotel.PriceNote</span>
-                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id" class="btn btn-detail">Detayları Gör</a>
+                                        <a asp-action="HotelDetail" asp-route-id="@hotel.Id"
+                                           asp-route-checkin="@checkinStr" asp-route-checkout="@checkoutStr"
+                                           asp-route-adults="@Model.Adults" asp-route-childrenAges="@Model.ChildrenAges"
+                                           asp-route-rooms="@Model.Rooms" asp-route-currency="@Model.Currency"
+                                           asp-route-stars="@hotel.Stars" asp-route-score="@hotel.Score"
+                                           asp-route-scoreWord="@hotel.ScoreWord"
+                                           class="btn btn-detail">Detayları Gör</a>
                                     </div>
                                 </div>
                             </article>
@@ -467,27 +457,59 @@
                     </div>
 
                     <!-- Pagination -->
-                    <nav class="pagination-wrap" aria-label="Sonuç sayfaları">
-                        <span class="pagination-info">1-20 / 436 sonuç</span>
-                        <ul class="pagination sf-pagination mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Önceki sayfa"><i class="bi bi-chevron-left"></i></a>
-                            </li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item d-none d-sm-block"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item disabled"><span class="page-link">…</span></li>
-                            <li class="page-item"><a class="page-link" href="#">18</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Sonraki sayfa"><i class="bi bi-chevron-right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
+                    @if (Model.TotalPages > 1)
+                    {
+                        <nav class="pagination-wrap" aria-label="Sonuç sayfaları">
+                            <span class="pagination-info">@firstItem-@lastItem / @Model.TotalCount.ToString("N0", tr) sonuç</span>
+                            <ul class="pagination sf-pagination mb-0">
+                                <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-action="HotelList" asp-all-route-data="PageRoute(Math.Max(1, Model.Page - 1))" aria-label="Önceki sayfa"><i class="bi bi-chevron-left"></i></a>
+                                </li>
+
+                                @if (pageStart > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="HotelList" asp-all-route-data="PageRoute(1)">1</a></li>
+                                    if (pageStart > 2)
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                    }
+                                }
+
+                                @for (var i = pageStart; i <= pageEnd; i++)
+                                {
+                                    <li class="page-item @(i == Model.Page ? "active" : "")" aria-current="@(i == Model.Page ? "page" : null)">
+                                        <a class="page-link" asp-action="HotelList" asp-all-route-data="PageRoute(i)">@i</a>
+                                    </li>
+                                }
+
+                                @if (pageEnd < Model.TotalPages)
+                                {
+                                    if (pageEnd < Model.TotalPages - 1)
+                                    {
+                                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                                    }
+                                    <li class="page-item"><a class="page-link" asp-action="HotelList" asp-all-route-data="PageRoute(Model.TotalPages)">@Model.TotalPages</a></li>
+                                }
+
+                                <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-action="HotelList" asp-all-route-data="PageRoute(Math.Min(Model.TotalPages, Model.Page + 1))" aria-label="Sonraki sayfa"><i class="bi bi-chevron-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
                 </div>
             </div>
         </div>
     </section>
 
 </main>
+
+@section Scripts {
+    <script>
+        // Filtre veya sıralama değişince formu gönder (sayfa otomatik 1'e döner)
+        var searchForm = document.getElementById('searchForm');
+        document.querySelectorAll('[data-autosubmit]').forEach(function (el) {
+            el.addEventListener('change', function () { searchForm.requestSubmit(); });
+        });
+    </script>
+}

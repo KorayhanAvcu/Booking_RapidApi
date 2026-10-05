@@ -4,6 +4,11 @@
     ViewData["ActivePage"] = "home";
     ViewData["BodyClass"] = "page-home";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Varsayılan tarihler (HotelList controller'ı yyyy-MM-dd bekliyor)
+    var today = DateTime.Today.ToString("yyyy-MM-dd");
+    var defaultCheckin = DateTime.Today.AddDays(14).ToString("yyyy-MM-dd");
+    var defaultCheckout = DateTime.Today.AddDays(17).ToString("yyyy-MM-dd");
 }
 
 @section Styles {
@@ -32,57 +37,57 @@
                     <!-- Hero illüstrasyonu (inline SVG, harici görsel gerektirmez) -->
                     <div class="hero-illustration" aria-hidden="true">
                         <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="300" cy="190" r="160" fill="#E9EBFB"/>
-                            <circle cx="415" cy="80" r="26" fill="#FFD9A8"/>
+                            <circle cx="300" cy="190" r="160" fill="#E9EBFB" />
+                            <circle cx="415" cy="80" r="26" fill="#FFD9A8" />
                             <g fill="#FFFFFF">
-                                <rect x="120" y="70" width="90" height="26" rx="13"/>
-                                <rect x="140" y="56" width="46" height="30" rx="15"/>
-                                <rect x="380" y="140" width="80" height="22" rx="11"/>
+                                <rect x="120" y="70" width="90" height="26" rx="13" />
+                                <rect x="140" y="56" width="46" height="30" rx="15" />
+                                <rect x="380" y="140" width="80" height="22" rx="11" />
                             </g>
-                            <path d="M60 170 C 130 110, 200 120, 250 80" fill="none" stroke="#B9BDEB" stroke-width="2.5" stroke-dasharray="6 8" stroke-linecap="round"/>
+                            <path d="M60 170 C 130 110, 200 120, 250 80" fill="none" stroke="#B9BDEB" stroke-width="2.5" stroke-dasharray="6 8" stroke-linecap="round" />
                             <g transform="translate(250 72) rotate(-28)">
-                                <path d="M0 8 L34 4 L44 0 L48 4 L44 8 L34 8 L0 12 Z" fill="#3B3FB6"/>
-                                <path d="M18 7 L10 -8 L16 -8 L28 6 Z" fill="#5A5ED0"/>
-                                <path d="M18 9 L10 22 L16 22 L28 10 Z" fill="#5A5ED0"/>
+                                <path d="M0 8 L34 4 L44 0 L48 4 L44 8 L34 8 L0 12 Z" fill="#3B3FB6" />
+                                <path d="M18 7 L10 -8 L16 -8 L28 6 Z" fill="#5A5ED0" />
+                                <path d="M18 9 L10 22 L16 22 L28 10 Z" fill="#5A5ED0" />
                             </g>
-                            <rect x="230" y="120" width="140" height="210" rx="10" fill="#FFFFFF"/>
-                            <rect x="230" y="120" width="140" height="26" rx="10" fill="#3B3FB6"/>
-                            <rect x="230" y="136" width="140" height="10" fill="#3B3FB6"/>
+                            <rect x="230" y="120" width="140" height="210" rx="10" fill="#FFFFFF" />
+                            <rect x="230" y="120" width="140" height="26" rx="10" fill="#3B3FB6" />
+                            <rect x="230" y="136" width="140" height="10" fill="#3B3FB6" />
                             <text x="300" y="138" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="12" font-weight="800" fill="#FFFFFF" letter-spacing="3">HOTEL</text>
                             <g fill="#DADDF6">
-                                <rect x="248" y="162" width="22" height="26" rx="4"/>
-                                <rect x="289" y="162" width="22" height="26" rx="4"/>
-                                <rect x="330" y="162" width="22" height="26" rx="4"/>
-                                <rect x="248" y="202" width="22" height="26" rx="4"/>
-                                <rect x="289" y="202" width="22" height="26" rx="4" fill="#FFD9A8"/>
-                                <rect x="330" y="202" width="22" height="26" rx="4"/>
-                                <rect x="248" y="242" width="22" height="26" rx="4" fill="#FFD9A8"/>
-                                <rect x="289" y="242" width="22" height="26" rx="4"/>
-                                <rect x="330" y="242" width="22" height="26" rx="4"/>
+                                <rect x="248" y="162" width="22" height="26" rx="4" />
+                                <rect x="289" y="162" width="22" height="26" rx="4" />
+                                <rect x="330" y="162" width="22" height="26" rx="4" />
+                                <rect x="248" y="202" width="22" height="26" rx="4" />
+                                <rect x="289" y="202" width="22" height="26" rx="4" fill="#FFD9A8" />
+                                <rect x="330" y="202" width="22" height="26" rx="4" />
+                                <rect x="248" y="242" width="22" height="26" rx="4" fill="#FFD9A8" />
+                                <rect x="289" y="242" width="22" height="26" rx="4" />
+                                <rect x="330" y="242" width="22" height="26" rx="4" />
                             </g>
-                            <rect x="282" y="284" width="36" height="46" rx="6" fill="#3B3FB6"/>
-                            <rect x="380" y="200" width="70" height="130" rx="8" fill="#F5F6FA"/>
+                            <rect x="282" y="284" width="36" height="46" rx="6" fill="#3B3FB6" />
+                            <rect x="380" y="200" width="70" height="130" rx="8" fill="#F5F6FA" />
                             <g fill="#DADDF6">
-                                <rect x="394" y="216" width="16" height="18" rx="3"/>
-                                <rect x="420" y="216" width="16" height="18" rx="3"/>
-                                <rect x="394" y="246" width="16" height="18" rx="3"/>
-                                <rect x="420" y="246" width="16" height="18" rx="3"/>
+                                <rect x="394" y="216" width="16" height="18" rx="3" />
+                                <rect x="420" y="216" width="16" height="18" rx="3" />
+                                <rect x="394" y="246" width="16" height="18" rx="3" />
+                                <rect x="420" y="246" width="16" height="18" rx="3" />
                             </g>
-                            <rect x="184" y="230" width="8" height="100" rx="4" fill="#C9A77C"/>
+                            <rect x="184" y="230" width="8" height="100" rx="4" fill="#C9A77C" />
                             <g fill="#6FB39A">
-                                <ellipse cx="170" cy="228" rx="28" ry="9" transform="rotate(-20 170 228)"/>
-                                <ellipse cx="208" cy="228" rx="28" ry="9" transform="rotate(20 208 228)"/>
-                                <ellipse cx="188" cy="220" rx="9" ry="24"/>
+                                <ellipse cx="170" cy="228" rx="28" ry="9" transform="rotate(-20 170 228)" />
+                                <ellipse cx="208" cy="228" rx="28" ry="9" transform="rotate(20 208 228)" />
+                                <ellipse cx="188" cy="220" rx="9" ry="24" />
                             </g>
                             <g transform="translate(96 250)">
-                                <rect x="16" y="-14" width="26" height="18" rx="6" fill="none" stroke="#1B2140" stroke-width="5"/>
-                                <rect x="0" y="0" width="58" height="76" rx="10" fill="#1B2140"/>
-                                <rect x="12" y="10" width="6" height="56" rx="3" fill="#3B3FB6"/>
-                                <rect x="40" y="10" width="6" height="56" rx="3" fill="#3B3FB6"/>
-                                <circle cx="12" cy="80" r="4" fill="#1B2140"/>
-                                <circle cx="46" cy="80" r="4" fill="#1B2140"/>
+                                <rect x="16" y="-14" width="26" height="18" rx="6" fill="none" stroke="#1B2140" stroke-width="5" />
+                                <rect x="0" y="0" width="58" height="76" rx="10" fill="#1B2140" />
+                                <rect x="12" y="10" width="6" height="56" rx="3" fill="#3B3FB6" />
+                                <rect x="40" y="10" width="6" height="56" rx="3" fill="#3B3FB6" />
+                                <circle cx="12" cy="80" r="4" fill="#1B2140" />
+                                <circle cx="46" cy="80" r="4" fill="#1B2140" />
                             </g>
-                            <rect x="60" y="330" width="420" height="4" rx="2" fill="#DADDF6"/>
+                            <rect x="60" y="330" width="420" height="4" rx="2" fill="#DADDF6" />
                         </svg>
 
                         <div class="floating-card">
@@ -108,7 +113,7 @@
                                 <span class="field-body">
                                     <span class="field-label">Nereye gidiyorsunuz?</span>
                                     <input type="text" id="destination" name="destination" class="field-input"
-                                           value="Milano, İtalya" placeholder="Şehir, bölge veya otel adı">
+                                           value="Milano" placeholder="Şehir" required>
                                 </span>
                             </label>
                         </div>
@@ -119,7 +124,8 @@
                                 <i class="bi bi-calendar3 field-icon"></i>
                                 <span class="field-body">
                                     <span class="field-label">Giriş</span>
-                                    <input type="text" id="checkin" name="checkin" class="field-input" value="28 Ekim 2026">
+                                    <input type="date" id="checkin" name="checkin" class="field-input"
+                                           value="@defaultCheckin" min="@today">
                                 </span>
                             </label>
                         </div>
@@ -130,7 +136,8 @@
                                 <i class="bi bi-calendar3 field-icon"></i>
                                 <span class="field-body">
                                     <span class="field-label">Çıkış</span>
-                                    <input type="text" id="checkout" name="checkout" class="field-input" value="31 Ekim 2026">
+                                    <input type="date" id="checkout" name="checkout" class="field-input"
+                                           value="@defaultCheckout" min="@defaultCheckin">
                                 </span>
                             </label>
                         </div>
@@ -201,16 +208,11 @@
                             </div>
                         </div>
 
-                        <!-- Çocuk Yaşı (çocuk sayısı 0'dan büyükse görünür) -->
+                        <!-- Çocuk Yaşları (her çocuk için bir seçim, JS ile oluşur) -->
                         <div class="col-12 col-sm-6 col-lg-3" id="childAgeWrapper">
                             <div class="counter-field">
-                                <label class="counter-label" for="childAge"><i class="bi bi-balloon"></i> Çocuk Yaşı</label>
-                                <select id="childAge" name="childAges" class="form-select age-select">
-                                    @for (var age = 0; age <= 17; age++)
-                                    {
-                                        <option value="@age" selected="@(age == 2)">@age yaş</option>
-                                    }
-                                </select>
+                                <span class="counter-label"><i class="bi bi-balloon"></i> Çocuk Yaşları</span>
+                                <div id="childAgeList" class="d-flex flex-wrap gap-2"></div>
                             </div>
                         </div>
                     </div>
@@ -381,4 +383,47 @@
 
 @section Scripts {
     <script src="~/js/home.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            // --- Çocuk sayısı kadar yaş seçimi ---
+            var counter = document.getElementById('childCounter');
+            var countInput = counter.querySelector('.counter-value');
+            var list = document.getElementById('childAgeList');
+            var wrapper = document.getElementById('childAgeWrapper');
+
+            function renderAges() {
+                var count = parseInt(countInput.value, 10) || 0;
+                var old = Array.from(list.querySelectorAll('select')).map(function (s) { return s.value; });
+                list.innerHTML = '';
+
+                for (var i = 0; i < count; i++) {
+                    var sel = document.createElement('select');
+                    sel.name = 'childrenAges';              // controller'daki parametre adı
+                    sel.className = 'form-select age-select';
+                    sel.setAttribute('aria-label', (i + 1) + '. çocuğun yaşı');
+                    for (var a = 0; a <= 17; a++) sel.add(new Option(a + ' yaş', a));
+                    sel.value = old[i] !== undefined ? old[i] : '5';
+                    list.appendChild(sel);
+                }
+                wrapper.style.display = count > 0 ? '' : 'none';
+            }
+
+            // Sayaç değeri home.js ile değiştiği için tıklamadan sonra yeniden çiz
+            counter.addEventListener('click', function () { setTimeout(renderAges, 0); });
+            renderAges();
+
+            // --- Çıkış tarihi girişten sonra olmalı ---
+            var ci = document.getElementById('checkin');
+            var co = document.getElementById('checkout');
+            ci.addEventListener('change', function () {
+                if (!ci.value) return;
+                co.min = ci.value;
+                if (!co.value || co.value <= ci.value) {
+                    var d = new Date(ci.value);
+                    d.setUTCDate(d.getUTCDate() + 1);
+                    co.value = d.toISOString().slice(0, 10);
+                }
+            });
+        })();
+    </script>
 }
