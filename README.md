@@ -121,13 +121,5 @@ Detay sayfası:
 /Booking/HotelDetail/6965925?checkin=2026-10-07&checkout=2026-10-10&adults=2&rooms=1&currency=TRY
 ```
 
-## Fiyat gösterimi hakkında not
-
-Liste ve detay sayfaları Booking'in iki farklı uç noktasından veri alır, bu yüzden aynı otelin fiyatı iki sayfada birebir aynı olmayabilir:
-
-- **Liste kartı:** `searchHotels` yanıtındaki `grossPrice` değerini gösterir. Yanıtta `chargesInfo` alanı "Includes taxes and charges" ise kart "Vergiler ve ücretler dahil" yazar.
-- **Detay sayfası:** `getHotelDetails` yanıtındaki `gross_amount` (konaklama), `excluded_amount` (ek vergi ve ücretler) ve `all_inclusive_amount` (toplam) değerlerini gösterir.
-
-Uygulama API'den gelen rakamları hesaplama yapmadan basar. Kampanyalar (Late Escape Deal, "Booking.com pays" vb.) dinamik olduğu için iki uç nokta bazı otellerde birkaç yüz lira fark verebilir. Örneğin 6 Ekim 2026'da CHER HOTEL & SPA Taksim için liste 19.443 TL, detay toplamı 19.254 TL döndürdü.
 
 
