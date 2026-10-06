@@ -10,6 +10,9 @@ namespace RapidApi.Web.Services
         private const string Host = "booking-com15.p.rapidapi.com";
         private const string BaseUrl = "https://booking-com15.p.rapidapi.com/api/v1/hotels";
 
+        // GEÇİCİ DEBUG: fiyatı incelemek istediğin otelin id'si (CHER HOTEL & SPA Taksim)
+        private const int DebugHotelId = 6965925;
+
         private static readonly JsonSerializerOptions JsonOpts = new()
         {
             PropertyNameCaseInsensitive = true
@@ -44,7 +47,69 @@ namespace RapidApi.Web.Services
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
+
+            // GEÇİCİ DEBUG: ham fiyat verisini logla (işin bitince bu satırı sil)
+            if (endpoint is "searchHotels" or "getHotelDetails")
+                LogPrices(endpoint, queryString, json);
+
             return JsonSerializer.Deserialize<T>(json, JsonOpts);
+        }
+
+        // GEÇİCİ DEBUG: API'nin döndürdüğü ham fiyat alanlarını konsola yazar
+        private static void LogPrices(string endpoint, string queryString, string json)
+        {
+            try
+            {
+                Console.WriteLine("==================== [PRICE-DEBUG] ====================");
+                Console.WriteLine($"Zaman   : {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                Console.WriteLine($"Endpoint: {endpoint}");
+                Console.WriteLine($"Sorgu   : {queryString}");
+
+                using var doc = JsonDocument.Parse(json);
+                if (!doc.RootElement.TryGetProperty("data", out var data))
+                {
+                    Console.WriteLine("Yanıtta 'data' alanı yok.");
+                    return;
+                }
+
+                if (endpoint == "searchHotels")
+                {
+                    if (data.TryGetProperty("hotels", out var hotels) && hotels.ValueKind == JsonValueKind.Array)
+                    {
+                        var found = false;
+                        foreach (var h in hotels.EnumerateArray())
+                        {
+                            if (!h.TryGetProperty("hotel_id", out var idEl)
+                                || idEl.ValueKind != JsonValueKind.Number
+                                || idEl.GetInt32() != DebugHotelId) continue;
+
+                            found = true;
+                            if (h.TryGetProperty("accessibilityLabel", out var label))
+                                Console.WriteLine($"accessibilityLabel: {label.GetString()}");
+                            if (h.TryGetProperty("property", out var prop)
+                                && prop.TryGetProperty("priceBreakdown", out var pb))
+                                Console.WriteLine($"LISTE priceBreakdown: {pb.GetRawText()}");
+                        }
+                        if (!found)
+                            Console.WriteLine($"Bu sayfada hotel_id={DebugHotelId} yok (sayfa/filtre farklı olabilir).");
+                    }
+                }
+                else if (endpoint == "getHotelDetails")
+                {
+                    if (data.TryGetProperty("hotel_id", out var idEl))
+                        Console.WriteLine($"hotel_id: {idEl.GetRawText()}");
+                    if (data.TryGetProperty("product_price_breakdown", out var pb))
+                        Console.WriteLine($"DETAY product_price_breakdown: {pb.GetRawText()}");
+                    if (data.TryGetProperty("room_recommendation", out var rr))
+                        Console.WriteLine($"DETAY room_recommendation: {rr.GetRawText()}");
+                }
+
+                Console.WriteLine("=======================================================");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PRICE-DEBUG] log hatası: {ex.Message}");
+            }
         }
 
         // ---------------------------------------------------------------
@@ -135,6 +200,15 @@ namespace RapidApi.Web.Services
 
             var gross = p.PriceBreakdown?.GrossPrice;
             var old = p.PriceBreakdown?.StrikethroughPrice;
+
+            // GEÇİCİ DEBUG: model deserialize edildikten sonraki değerler
+            if (item.HotelId == DebugHotelId)
+            {
+                Console.WriteLine("[PRICE-DEBUG] MapToCard -> "
+                    + $"GrossPrice.Value={gross?.Value} Currency={gross?.Currency} | "
+                    + $"Strikethrough.Value={old?.Value} | "
+                    + $"ChargesInfo='{p.PriceBreakdown?.ChargesInfo}'");
+            }
 
             var vm = new HotelCardVm
             {
@@ -316,6 +390,12 @@ namespace RapidApi.Web.Services
                 var gross = pb.GrossAmount.Value;
                 var excluded = pb.ExcludedAmount?.Value ?? 0;
                 var total = pb.AllInclusiveAmount?.Value ?? gross + excluded;
+
+                // GEÇİCİ DEBUG: detayda hesaplanan değerler
+                Console.WriteLine("[PRICE-DEBUG] MapDetailInto -> "
+                    + $"hotel={d.HotelId} gross={gross} excluded={excluded} "
+                    + $"allInclusive={pb.AllInclusiveAmount?.Value} total(kullanılan)={total} "
+                    + $"gross+excluded={gross + excluded}");
 
                 vm.Price = new PriceSummaryVm
                 {
