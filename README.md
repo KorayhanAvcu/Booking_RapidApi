@@ -130,11 +130,4 @@ Liste ve detay sayfaları Booking'in iki farklı uç noktasından veri alır, bu
 
 Uygulama API'den gelen rakamları hesaplama yapmadan basar. Kampanyalar (Late Escape Deal, "Booking.com pays" vb.) dinamik olduğu için iki uç nokta bazı otellerde birkaç yüz lira fark verebilir. Örneğin 6 Ekim 2026'da CHER HOTEL & SPA Taksim için liste 19.443 TL, detay toplamı 19.254 TL döndürdü.
 
-## Güvenlik
 
-- API anahtarını repoya koyma. Daha önce commit edilmiş bir anahtar varsa RapidAPI panelinden yenile; commit geçmişinde kaldığı için dosyadan silmek yeterli değildir.
-- `.gitignore`, `appsettings.*.json` dosyalarının yerel kopyalarını dışarıda bırakacak şekilde gözden geçirilmelidir.
-
-## Lisans
-
-Bu repo için henüz bir lisans belirtilmemiş.
